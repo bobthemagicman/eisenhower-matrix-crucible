@@ -1,0 +1,12 @@
+{
+  "name": "eisenhower-matrix-crucible",
+  "private": true,
+  "type": "module",
+  "description": "Your to-do list as a forge fire, sorted by the Eisenhower matrix. Single HTML page, no build.",
+  "license": "MPL-2.0",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "validate": "node scripts/validate.mjs"
+  }
+}

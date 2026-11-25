@@ -12,6 +12,8 @@ Shows your to-do list as a forge fire sorted by the Eisenhower matrix. Each quar
                Striker │ Slag
 ```
 
+One HTML page with no build step and no dependencies. It reads your items from a local file, any web address, S3 or DynamoDB, and one deployment can serve many people, each seeing only their own board.
+
 ## Reading the fire
 
 | Quadrant | Eisenhower | Why the name |
@@ -31,32 +33,49 @@ Shows your to-do list as a forge fire sorted by the Eisenhower matrix. Each quar
 | Dull red | Later |
 | Black heat | No date |
 
-One HTML file and one data file. No build, no server, no dependencies.
-
 ## Use it
 
-1. Clone the repo and open `index.html` in a browser. It shows the sample items.
-2. Copy `sample-items.js` to `items.js` and change `window.CRUCIBLE_SAMPLE` to `window.CRUCIBLE`.
-3. Replace the items with your own and reload.
+Open `index.html` in a browser: it shows sample items. Then give it your own, any of these ways:
 
-`items.js` is git-ignored, so your list never lands in a commit. Keep it that way: the items in it are usually private.
+| Source | How | Works from disk (`file://`) |
+|---|---|---|
+| Drop a file | Drag a JSON file onto the page, or use **Open a file**. It stays in your browser | Yes |
+| `items.js` | Copy `sample-items.js` to `items.js` and change `window.CRUCIBLE_SAMPLE` to `window.CRUCIBLE` | Yes |
+| `items.json` | Put the document beside the page | No: serve the folder |
+| Any web address | `index.html?data=https://…/items.json`, or `{ type: 'url', url }` in `config.js`. The host must allow cross-origin reads | No |
+| S3 | `{ type: 's3', region, bucket, key: 'boards/{email}.json' }` in `config.js`, with sign-in | No |
+| DynamoDB | `{ type: 'dynamodb', region, table, board: '{email}' }` in `config.js`, with sign-in | No |
 
-The page reads `items.js` with a plain `<script>` tag, so it works straight from disk (`file://`) as well as from any static host. If `items.js` is missing it falls back to the samples.
+The page picks the first that applies: `?data=`, then `config.js`, then `items.js`, then `items.json`, then the samples. Copy `config.example.js` to `config.js` to choose. To serve the folder: `npx serve -l 8080`, or `python3 -m http.server 8080`.
+
+`items.js`, `items.json` and `config.js` are git-ignored, so your list never lands in a commit. Keep it that way: the items in them are usually private.
+
+### S3 and DynamoDB, for one person or many
+
+The browser reads S3 and DynamoDB directly, signing its own requests (`lib/aws.mjs`, no SDK). Credentials come from Cognito: you sign in on the Hosted UI and get short-lived, read-only AWS credentials for that tab.
+
+`{email}` in the source becomes the signed-in user's email, so one deployed page serves everyone. Access is enforced by IAM, not by the page: each user's role can read only `boards/<their email>.json` and the table row keyed by their email. The `infra/` folder has a CDK stack that sets all of this up; see [infra/README.md](infra/README.md).
 
 ## Items file
 
+The format is defined in [schema/crucible.schema.json](schema/crucible.schema.json). Check a file with:
+
+```sh
+node scripts/validate.mjs items.json
+```
+
 ```js
-window.CRUCIBLE = {
-  title: 'My week',                                  // page title; also the headline when there is no goal
-  brand: 'my team / radar',                          // optional header text
-  goal: { label: 'launch day', date: '2027-03-01' }, // optional: headline counts down to it
-  snapshot: '2026-11-24',                            // optional: when the list was taken
-  linkBase: 'https://example.atlassian.net/browse/', // optional: item.key is appended to make a link
-  quadrants: { 4: { name: 'Cold iron', hint: 'Park' } }, // optional: rename any quadrant (a string sets just the name)
-  items: [
-    { q: 1, key: 'OPS-12', title: 'Send the proposal', by: '2026-11-28', deadline: '2026-12-05', next: 'One read-through, then send.' }
+{
+  "title": "My week",                                      // page title; also the headline when there is no goal
+  "brand": "my team / radar",                              // optional header text
+  "goal": { "label": "launch day", "date": "2027-03-01" }, // optional: headline counts down to it
+  "snapshot": "2026-11-24",                                // optional: when the list was taken
+  "linkBase": "https://example.atlassian.net/browse/",     // optional: item.key is appended to make a link
+  "quadrants": { "4": { "name": "Cold iron", "hint": "Park" } }, // optional: rename any quadrant
+  "items": [
+    { "id": "jira:OPS-12", "q": 1, "key": "OPS-12", "title": "Send the proposal", "by": "2026-11-28", "deadline": "2026-12-05", "next": "One read-through, then send." }
   ]
-};
+}
 ```
 
 | Field | Required | Meaning |
@@ -66,13 +85,18 @@ window.CRUCIBLE = {
 | `by` | no | When the next step is due: a date `"YYYY-MM-DD"` or a number of days from today. Sets the heat and the distance from the center. Leave it out or `null` for black heat on the rim |
 | `deadline` | no | The outer deadline, if different from `by`. Shown in the list only |
 | `next` | no | The next step, in a sentence |
+| `id` | no | Stable id such as `jira:OPS-12`. task-brazer always sets it |
 | `key` | no | A ticket key. With `linkBase` it becomes a link |
 | `url` | no | A link for the item (overrides `linkBase`). Only `http` and `https` links are used |
 | `source` | no | Where the item came from, shown when there is no key |
 
-Items keep the order you give them; the number on each piece is its position in the list. Put them in priority order. The fire reads best with up to about 20 items.
+Items keep the order you give them; the number on each piece is its position in the list. Put them in priority order. The fire reads best with up to about 20 items. Everything in the file is shown as text, never as HTML.
 
-Everything in the file is shown as text, never as HTML.
+## Filling it
+
+- **By hand**, from the table above.
+- **With an AI agent.** The repo ships a Claude Code skill, [`.claude/skills/crucible-items`](.claude/skills/crucible-items/SKILL.md): ask "refresh my crucible" and it reads your open loops (Jira, GitHub, email, calendar, Slack, notes, AI sessions), sorts them, writes `items.json` and validates it.
+- **With task-brazer**, the companion brazer (brazing = syncing) that gathers tasks from many sources for many users on a schedule and writes each user's board to S3 or DynamoDB.
 
 ## Look
 
@@ -82,7 +106,16 @@ Motion is one bellows breath on load and on **Work the bellows**: the fire flare
 
 ## Accessibility
 
-Pieces and rows are keyboard reachable (Tab, then Enter or Space to select). Selecting a piece highlights its row and the other way round. Heat and overdue status are written out in words, never shown by color alone. The layout stacks under 900px and works down to 320px wide.
+Pieces and rows are keyboard reachable (Tab, then Enter or Space to select). Selecting a piece highlights its row and the other way round. Heat and overdue status are written out in words, never shown by color alone. Loading problems are announced with what to do next. The layout stacks under 900px and works down to 320px wide.
+
+## Development
+
+```sh
+npm test            # node --test: the SigV4 signer against AWS's published example, and the validator
+cd infra && npm install && npx tsc --noEmit
+```
+
+No build and no runtime dependencies for the page. Keep it that way.
 
 ## License
 

@@ -1,9 +1,18 @@
-# Your own items. Never committed: they are private.
+# Your own items and settings. Never committed: they are private.
 items.js
 items.*.js
+items.json
+items.*.json
+config.js
 
 # Licensed fonts are not redistributable.
 *.woff
 *.woff2
+
+# CDK
+infra/node_modules/
+infra/cdk.out/
+infra/cdk.context.json
+node_modules/
 
 .DS_Store

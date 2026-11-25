@@ -14,9 +14,10 @@
    COLOUR and TYPE: Afterglow ground and glass (content-forge MASTER.md) with blacksmith heat colors (white, yellow, orange, cherry, dull red, black heat);
    Aeonik if installed locally (never bundled: it is licensed), else Lato.
    LAYOUT: fire left (sticky), numbered list right; stacks under 900px. */
-:root{color-scheme:dark;--bg:#0b0710;--glass:rgb(255 255 255/.04);--glass-hover:rgb(255 255 255/.07);--border:rgb(255 255 255/.09);--edge:rgb(255 255 255/.14);--strong:#fff;--text:#e5e5e5;--muted:#aaa;--magenta:#d92b83;--pink:#ee77ae;--amber:#f2a524;--danger:#ff6b6b;--heat:linear-gradient(95deg,#fff4d6 0%,#ffd24a 28%,#ff8f2e 55%,#e5413b 80%,#9c2a2e 100%);--display:"Aeonik","Lato",Arial,sans-serif;--sans:"Lato",Arial,sans-serif}
+:root{color-scheme:dark;--bg:#0b0710;--glass:rgb(255 255 255/.04);--glass-hover:rgb(255 255 255/.07);--border:rgb(255 255 255/.09);--edge:rgb(255 255 255/.14);--raised:#1a1220;--strong:#fff;--text:#e5e5e5;--muted:#aaa;--lime:#affc41;--magenta:#d92b83;--pink:#ee77ae;--amber:#f2a524;--danger:#ff6b6b;--heat:linear-gradient(95deg,#fff4d6 0%,#ffd24a 28%,#ff8f2e 55%,#e5413b 80%,#9c2a2e 100%);--display:"Aeonik","Lato",Arial,sans-serif;--sans:"Lato",Arial,sans-serif}
 :root[data-theme=light],:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
+[hidden]{display:none!important}
 html{font-synthesis:none;background:var(--bg);-webkit-font-smoothing:antialiased}
 body{margin:0;min-height:100dvh;color:var(--text);font:16px/1.5 var(--sans);overflow-x:clip;background:radial-gradient(1100px 700px at 8% -8%,rgb(60 22 66/.95),transparent 70%),radial-gradient(800px 600px at 100% 4%,rgb(217 43 131/.18),transparent 70%),radial-gradient(900px 700px at 30% 70%,rgb(255 143 46/.07),transparent 70%),var(--bg);background-attachment:fixed}
 .wrap{width:100%;max-width:1440px;margin-inline:auto;padding-inline:16px}
@@ -29,16 +30,24 @@ header .wrap{height:64px;display:flex;align-items:center;gap:12px}
 .word span{color:var(--muted)}
 .label{font:400 12px/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase}
 main{padding-block:40px 64px}
-h1,h3{font-family:var(--display);font-weight:400;color:var(--strong);text-wrap:balance;margin:0}
+h1,h2,h3{font-family:var(--display);font-weight:400;color:var(--strong);text-wrap:balance;margin:0}
 h1{font-size:clamp(32px,4.4vw,48px);line-height:1.05;letter-spacing:-.015em}
+h2{font-size:24px;line-height:1.2}
 .intro{max-width:70ch;margin:12px 0 0}
 .note{margin:6px 0 0;color:var(--muted);font-size:14px}
+.srcbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin-top:10px;font-size:14px;color:var(--muted)}
+.srcbar .from{overflow-wrap:anywhere}.srcbar .from:empty{display:none}
+.srcbar .from b{color:var(--text);font-weight:400}
+.quiet{height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--edge);background:var(--glass);color:var(--text);font:400 14px var(--sans);cursor:pointer;transition:background .2s}
+.quiet:hover{background:var(--glass-hover)}
 .legend{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:24px 0 14px}
 .chip{display:inline-flex;align-items:baseline;gap:8px;padding:9px 14px;border-radius:999px;background:var(--glass);border:1px solid var(--border);color:var(--strong)}
 .chip .hint{color:var(--muted);font-size:14px}
 .chip b{font:700 14px/1 var(--sans);font-variant-numeric:tabular-nums}
 .btn{margin-left:auto;height:44px;padding:0 20px;border-radius:999px;border:1px solid var(--magenta);background:rgb(217 43 131/.08);color:var(--pink);cursor:pointer;transition:background .2s,color .2s}
 .btn:hover{background:var(--magenta);color:#fff}
+.primary{height:44px;padding:0 22px;border-radius:999px;border:0;background:var(--lime);color:#303030;cursor:pointer;box-shadow:0 14px 40px -12px rgb(175 252 65/.7);transition:background .2s,transform .2s ease}
+.primary:hover{background:#9ee83a}
 .heats{list-style:none;margin:0 0 28px;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:10px 4px}
 .heats li{font-size:14px;color:var(--muted);line-height:1.35}
 .heats .bar{display:block;height:8px;border-radius:2px;background:rgb(var(--rgb));margin-bottom:6px;box-shadow:0 0 16px -2px rgb(var(--rgb)/.6)}
@@ -84,13 +93,20 @@ h1{font-size:clamp(32px,4.4vw,48px);line-height:1.05;letter-spacing:-.015em}
 .link{position:relative;z-index:1;color:var(--text);text-decoration:underline 1px var(--magenta);text-underline-offset:3px;display:inline-flex;align-items:center;gap:4px;min-height:24px;white-space:nowrap}
 .link:hover{color:#fff;text-decoration-thickness:2px}
 .src{white-space:nowrap}
-.empty{padding:32px;border-radius:18px;background:var(--glass);border:1px solid var(--border);max-width:60ch}
+.panel{padding:32px;border-radius:18px;background:var(--glass);border:1px solid var(--border);max-width:62ch;display:grid;gap:12px;justify-items:start}
+.panel p{margin:0;max-width:60ch}
+.alert{border-color:var(--danger)}
+.alert h2{display:flex;gap:10px;align-items:center}
+.alert h2 svg{color:var(--danger);flex:none}
+.drop{position:fixed;inset:12px;z-index:100;border:2px dashed var(--amber);border-radius:18px;background:rgb(11 7 16/.8);display:grid;place-items:center;font:400 24px var(--display);color:var(--strong);pointer-events:none}
 footer{color:var(--muted);font-size:14px;margin-top:40px;max-width:70ch}
 footer p{margin:0 0 8px}
 footer b{color:var(--text);font-weight:700}
 code{font-size:.9em;color:var(--strong)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media(prefers-reduced-motion:no-preference){
  .row:hover{transform:translateY(-2px)}
+ .primary:hover{transform:translateY(-2px)}
  .lit .flare{animation:flare 2.4s ease-out 1}
  .lit .blip{opacity:0;animation:glowIn .5s ease forwards}
 }
@@ -100,7 +116,9 @@ code{font-size:.9em;color:var(--strong)}
 @media(max-width:600px){.btn{margin-left:0}main{padding-top:28px}}
 @media(forced-colors:active){header{border-image:none;border-bottom-color:CanvasText}}
 </style>
-<!-- Sample items ship with the repo. Your own items go in items.js (git-ignored); see README. -->
+<!-- Optional, git-ignored: config.js sets window.CRUCIBLE_CONFIG (where the data lives, how to sign in). See config.example.js. -->
+<script src="config.js" onerror="this.remove()"></script>
+<!-- Sample items ship with the repo. Your own items go in items.json or items.js (both git-ignored); see README. -->
 <script src="sample-items.js"></script>
 <script src="items.js" onerror="this.remove()"></script>
 </head>
@@ -109,27 +127,42 @@ code{font-size:.9em;color:var(--strong)}
 <main class="wrap">
  <h1 id="headline">Eisenhower matrix</h1>
  <p class="intro">Your most important open items, sorted the Eisenhower way and read like a forge. Each quarter of the fire is one quadrant. The hotter a piece glows and the closer it sits to the center, the sooner its next step is due.</p>
- <p class="note" id="note"></p>
- <div class="legend" id="legend"></div>
- <ul class="heats" id="heats" aria-label="Heat scale"></ul>
- <div class="grid" id="grid">
-  <section class="scope" aria-label="Forge fire"><div class="fig" id="fig"><svg id="scope" role="group" aria-label="Items placed by quadrant and heat"></svg></div></section>
-  <section aria-label="Items in priority order"><ol class="list" id="list"></ol></section>
+ <p class="note" id="note" role="status">Loading items…</p>
+ <div class="srcbar"><span class="from" id="from"></span><button class="quiet" id="open" type="button">Open a file</button><button class="quiet" id="signout" type="button" hidden>Sign out</button><input type="file" id="file" accept=".json,application/json" class="sr" tabindex="-1" aria-hidden="true"></div>
+ <div id="board" hidden>
+  <div class="legend" id="legend"></div>
+  <ul class="heats" id="heats" aria-label="Heat scale"></ul>
+  <div class="grid" id="grid">
+   <section class="scope" aria-label="Forge fire"><div class="fig" id="fig"><svg id="scope" role="group" aria-label="Items placed by quadrant and heat"></svg></div></section>
+   <section aria-label="Items in priority order"><ol class="list" id="list"></ol></section>
+  </div>
  </div>
+ <div id="panel" class="panel" style="margin-top:28px" hidden></div>
  <footer>
   <p><b>Strike</b> do it now, while the iron is hot. <b>Bank</b> schedule it: bank the fire and come back. <b>Striker</b> delegate it: the striker is the smith’s helper on the sledge. <b>Slag</b> skim it off and drop it.</p>
-  <p>Rings mark one week, two weeks, 30 days and 60 days from today. Items with no date sit at black heat on the rim. Selecting a piece highlights its row, and the other way round.</p>
+  <p>Rings mark one week, two weeks, 30 days and 60 days from today. Items with no date sit at black heat on the rim. Selecting a piece highlights its row, and the other way round. Drop a JSON file anywhere on the page to look at it; it stays in your browser.</p>
  </footer>
 </main>
+<div class="drop" id="drop" hidden>Drop a crucible JSON file</div>
 <script>
 {
-const data=window.CRUCIBLE||window.CRUCIBLE_SAMPLE||{items:[]};
-const isSample=!window.CRUCIBLE;
+const CFG=window.CRUCIBLE_CONFIG||{};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const ICON_EXT='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>';
+const ICON_ALERT='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>';
 
-// Quadrants: sector of the fire (degrees clockwise from north) and the smith's name for each.
-const Q={1:{name:'Strike',hint:'Do first',lo:270,hi:360},2:{name:'Bank',hint:'Schedule',lo:0,hi:90},3:{name:'Striker',hint:'Delegate',lo:180,hi:270},4:{name:'Slag',hint:'Eliminate',lo:90,hi:180}};
-Object.entries(data.quadrants||{}).forEach(([k,v])=>{if(!Q[k])return;if(typeof v==='string')Q[k].name=v;else if(v&&typeof v==='object'){if(v.name)Q[k].name=String(v.name);if(v.hint)Q[k].hint=String(v.hint)}});
+// ---- Dates ------------------------------------------------------------------------------------
+const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+const toDate=v=>{if(Number.isInteger(v)){const d=new Date(today);d.setDate(d.getDate()+v);return d}if(typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)){const[y,m,d]=v.split('-').map(Number);return new Date(y,m-1,d)}return null};
+const daysTo=v=>{const d=toDate(v);return d?Math.round((d-today)/864e5):null};
+const fmt=v=>toDate(v).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+const when=d=>d==null?'No date':d<0?`${-d} day${d===-1?'':'s'} overdue`:d===0?'Due today':d===1?'Due tomorrow':`In ${d} days`;
+const safeUrl=u=>typeof u==='string'&&/^https?:\/\//i.test(u)?u:null;
 
+// ---- Model ------------------------------------------------------------------------------------
+const QUADS={1:{name:'Strike',hint:'Do first',lo:270,hi:360},2:{name:'Bank',hint:'Schedule',lo:0,hi:90},3:{name:'Striker',hint:'Delegate',lo:180,hi:270},4:{name:'Slag',hint:'Eliminate',lo:90,hi:180}};
 // Blacksmith heat colors, hottest first. An item's heat comes from how soon its next step is due.
 const HEATS=[
  {name:'Burning',hint:'overdue',rgb:'255 255 255',ink:'#303030'},
@@ -141,53 +174,106 @@ const HEATS=[
  {name:'Black heat',hint:'no date',rgb:'110 96 104',ink:'#ffffff'}
 ];
 const heatOf=d=>d==null?HEATS[6]:d<0?HEATS[0]:HEATS.slice(1,6).find(h=>d<=h.max);
+let Q=QUADS,items=[],counts=[0,0,0,0],sel=-1;
 
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
-const toDate=v=>{if(typeof v==='number'){const d=new Date(today);d.setDate(d.getDate()+v);return d}if(typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)){const[y,m,d]=v.split('-').map(Number);return new Date(y,m-1,d)}return null};
-const daysTo=v=>{const d=toDate(v);return d?Math.round((d-today)/864e5):null};
-const fmt=v=>toDate(v).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-const when=d=>d==null?'No date':d<0?`${-d} day${d===-1?'':'s'} overdue`:d===0?'Due today':d===1?'Due tomorrow':`In ${d} days`;
-const safeUrl=u=>typeof u==='string'&&/^https?:\/\//i.test(u)?u:null;
-const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+// ---- Loading ----------------------------------------------------------------------------------
+let auth=null;
+const shortUrl=u=>{try{const x=new URL(u,location.href);return x.origin===location.origin?x.pathname.split('/').pop():x.host+x.pathname}catch{return u}};
+async function fetchJson(url){
+ const res=await fetch(url,{cache:'no-store'});
+ if(!res.ok)throw new Error(`Couldn't load ${shortUrl(url)} (${res.status}).`);
+ try{return await res.json()}catch{throw new Error(`${shortUrl(url)} isn't valid JSON.`)}
+}
+/** Works out where the items come from: ?data= URL, then config.js, then items.js, then items.json, then the sample. */
+async function load(){
+ const dataParam=new URLSearchParams(location.search).get('data');
+ const src=dataParam?{type:'url',url:dataParam}:CFG.source;
+ if(!src){
+  if(window.CRUCIBLE)return{doc:window.CRUCIBLE,from:'items.js'};
+  if(location.protocol!=='file:'){
+   const res=await fetch('items.json',{cache:'no-store'}).catch(()=>null);
+   if(res&&res.ok)return{doc:await res.json(),from:'items.json'};
+  }
+  return{doc:window.CRUCIBLE_SAMPLE,from:'sample items',sample:true};
+ }
+ if(src.type==='json'||src.type==='url'){
+  if(location.protocol==='file:'&&!/^https?:/i.test(src.url))throw new Error('Browsers block reading local JSON files from a page opened from disk. Serve the folder (for example npx serve, or python3 -m http.server) or use items.js.');
+  return{doc:await fetchJson(src.url),from:shortUrl(src.url)};
+ }
+ if(src.type==='s3'||src.type==='dynamodb'){
+  if(location.protocol==='file:')throw new Error('S3 and DynamoDB need the page served over http or https, because sign-in returns to a web address. Serve the folder (for example npx serve) and add that address to the Cognito app client.');
+  if(!CFG.auth)throw new Error('config.js sets an AWS source but no auth settings. Copy them from the infra stack outputs (see config.example.js).');
+  const aws=await import('./lib/aws.mjs');
+  auth=aws.cognitoAuth(CFG.auth);
+  await auth.handleRedirect();
+  const creds=await auth.credentials();
+  if(!creds)return{needSignIn:true};
+  // {email} in key or board becomes the signed-in user's email, so one page serves every user.
+  // IAM only lets each user read their own board, whatever this page asks for.
+  const email=await auth.email();
+  const fill=v=>typeof v==='string'?v.replace(/\{email\}/g,()=>{if(!email)throw new Error('Your sign-in token has no email address, which the board needs.');return email}):v;
+  const s={...src,key:fill(src.key),board:fill(src.board)};
+  const from=s.type==='s3'?`s3://${s.bucket}/${s.key}`:`DynamoDB ${s.table} / ${s.board}`;
+  const doc=s.type==='s3'?await aws.readS3(s,creds):await aws.readDynamo(s,creds);
+  return{doc,from,signedIn:true};
+ }
+ throw new Error(`config.js: unknown source type "${src.type}". Use json, url, s3 or dynamodb.`);
+}
 
-const items=(Array.isArray(data.items)?data.items:[]).filter(it=>{
- const ok=it&&[1,2,3,4].includes(it.q)&&typeof it.title==='string';
- if(!ok)console.warn('Skipped an item: it needs q (1-4) and title.',it);
- return ok;
-});
-items.forEach(it=>{it.d=daysTo(it.by);it.heat=heatOf(it.d);it.url=safeUrl(it.url)||(it.key&&safeUrl(data.linkBase)?data.linkBase+encodeURIComponent(it.key):null)});
+// ---- States -----------------------------------------------------------------------------------
+function showPanel(html){$('board').hidden=true;const p=$('panel');p.innerHTML=html;p.hidden=false}
+function showError(err){
+ $('note').textContent='The items could not be loaded.';
+ showPanel(`<h2>${ICON_ALERT.replace('width="14" height="14"','width="24" height="24"')}Couldn't load the items</h2><p>${esc(err.message||err)}</p><button class="quiet" type="button" data-act="retry">Try again</button>`);
+ $('panel').classList.add('alert');$('panel').setAttribute('role','alert');
+}
+function showSignIn(){
+ $('note').textContent='Your items are private. Sign in to load them.';
+ showPanel('<h2>Sign in to light the fire</h2><p>The items live in your AWS account. Signing in gets short-lived, read-only access for this tab only.</p><button class="primary label" type="button" data-act="signin">Sign in</button>');
+}
+$('panel').addEventListener('click',e=>{const a=e.target.closest('[data-act]')?.dataset.act;if(a==='retry')boot();if(a==='signin')auth?.signIn()});
+$('signout').addEventListener('click',()=>auth?.signOut());
 
-const $=id=>document.getElementById(id);
-if(data.brand)$('brand').textContent=data.brand;
-if(data.title)document.title=data.title;
-const goalDays=data.goal?daysTo(data.goal.date):null;
-$('headline').textContent=data.goal&&goalDays!=null?(goalDays>0?`${goalDays} day${goalDays===1?'':'s'} to ${data.goal.label}`:`${data.goal.label}: the date has arrived`):(data.title||'Eisenhower matrix');
-$('note').textContent=isSample?'Showing sample items. Add an items.js beside this page to see your own (see README).':data.snapshot?`Snapshot taken ${fmt(data.snapshot)}. Pieces heat up as the days pass, but the items themselves don't update.`:'';
+// ---- Render -----------------------------------------------------------------------------------
+function render(doc,{from,sample}){
+ $('panel').hidden=true;$('panel').classList.remove('alert');$('panel').removeAttribute('role');
+ doc=doc&&typeof doc==='object'?doc:{};
+ Q=JSON.parse(JSON.stringify(QUADS));
+ Object.entries(doc.quadrants||{}).forEach(([k,v])=>{if(!Q[k])return;if(typeof v==='string')Q[k].name=v;else if(v&&typeof v==='object'){if(v.name)Q[k].name=String(v.name);if(v.hint)Q[k].hint=String(v.hint)}});
+ items=(Array.isArray(doc.items)?doc.items:[]).filter(it=>{
+  const ok=it&&[1,2,3,4].includes(it.q)&&typeof it.title==='string';
+  if(!ok)console.warn('Skipped an item: it needs q (1-4) and title.');
+  return ok;
+ }).map(it=>{const d=daysTo(it.by);return{...it,d,heat:heatOf(d),url:safeUrl(it.url)||(it.key&&safeUrl(doc.linkBase)?doc.linkBase+encodeURIComponent(it.key):null)}});
+ counts=[1,2,3,4].map(q=>items.filter(i=>i.q===q).length);
+ sel=-1;
 
-const ICON_EXT='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>';
-const ICON_ALERT='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>';
+ $('brand').textContent=typeof doc.brand==='string'?doc.brand:'eisenhower matrix / crucible';
+ document.title=typeof doc.title==='string'?doc.title:'Eisenhower Matrix Crucible';
+ const goalDays=doc.goal?daysTo(doc.goal.date):null;
+ $('headline').textContent=doc.goal&&goalDays!=null?(goalDays>0?`${goalDays} day${goalDays===1?'':'s'} to ${doc.goal.label}`:`${doc.goal.label}: the date has arrived`):(doc.title||'Eisenhower matrix');
+ $('note').textContent=sample?'Showing sample items. Add items.json or items.js beside this page, or set a source in config.js (see README).':toDate(doc.snapshot)?`Snapshot taken ${fmt(doc.snapshot)}. Pieces heat up as the days pass, but the items themselves don't update.`:`${items.length} item${items.length===1?'':'s'}.`;
+ $('from').innerHTML=`From <b>${esc(from)}</b>`;
 
-const counts=[1,2,3,4].map(q=>items.filter(i=>i.q===q).length);
-$('legend').innerHTML=[1,2,3,4].map(q=>`<span class="chip"><span class="label">${esc(Q[q].name)}</span><span class="hint">${esc(Q[q].hint)}</span><b>${counts[q-1]}</b></span>`).join('')+'<button class="btn label" id="relight" type="button">Work the bellows</button>';
-$('heats').innerHTML=HEATS.map(h=>`<li style="--rgb:${h.rgb}"><span class="bar"></span><b>${items.filter(i=>i.heat===h).length}</b> ${esc(h.name)}<br>${esc(h.hint)}</li>`).join('');
+ if(!items.length){showPanel('<h2>The fire is empty</h2><p>This source has no items. Each item needs a quadrant <code>q</code> from 1 to 4 and a <code>title</code>; see <code>schema/crucible.schema.json</code>.</p>');return}
+ $('board').hidden=false;
+ $('legend').innerHTML=[1,2,3,4].map(q=>`<span class="chip"><span class="label">${esc(Q[q].name)}</span><span class="hint">${esc(Q[q].hint)}</span><b>${counts[q-1]}</b></span>`).join('')+'<button class="btn label" type="button" data-act="relight">Work the bellows</button>';
+ $('heats').innerHTML=HEATS.map(h=>`<li style="--rgb:${h.rgb}"><span class="bar"></span><b>${items.filter(i=>i.heat===h).length}</b> ${esc(h.name)}<br>${esc(h.hint)}</li>`).join('');
+ $('list').innerHTML=items.map((it,i)=>{
+  const late=it.d!=null&&it.d<0;
+  const w=late?`<span class="late">${ICON_ALERT}${esc(when(it.d))}</span>`:`<span>${esc(when(it.d))}</span>`;
+  const by=it.d!=null?`<span>Act by ${esc(fmt(it.by))}</span>`:'';
+  const dl=toDate(it.deadline)?`<span>Deadline ${esc(fmt(it.deadline))}</span>`:'';
+  const linkText=typeof it.key==='string'&&it.key?it.key:'Open';
+  const ref=it.url?`<a class="link" href="${esc(it.url)}" target="_blank" rel="noopener" aria-label="${esc(linkText)} (opens in new tab)">${esc(linkText)}${ICON_EXT}</a>`:it.key?`<span class="src">${esc(it.key)}</span>`:it.source?`<span class="src">${esc(it.source)}</span>`:'';
+  const next=it.next?`<p class="next">${esc(it.next)}</p>`:'';
+  return `<li class="row${late?' late':''}" id="r-${i}" data-i="${i}" style="--rgb:${it.heat.rgb};--ink:${it.heat.ink}"><span class="num" aria-hidden="true">${i+1}</span><div><h3><button class="rowbtn" type="button" aria-pressed="false" data-i="${i}">${esc(it.title)}</button></h3><p class="meta"><span class="q">${esc(Q[it.q].name)}</span><span>${esc(it.heat.name)}</span>${w}${by}${dl}${ref}</p>${next}</div></li>`;
+ }).join('');
+ draw();relight();
+}
 
-if(!items.length){
- $('grid').outerHTML='<div class="empty"><h3>The fire is empty</h3><p class="next">Add items to <code>items.js</code> (copy <code>sample-items.js</code> to start). Each needs a quadrant <code>q</code> from 1 to 4 and a <code>title</code>.</p></div>';
-}else{
-const list=$('list');
-list.innerHTML=items.map((it,i)=>{
- const late=it.d!=null&&it.d<0;
- const w=late?`<span class="late">${ICON_ALERT}${esc(when(it.d))}</span>`:`<span>${esc(when(it.d))}</span>`;
- const by=it.d!=null?`<span>Act by ${esc(fmt(it.by))}</span>`:'';
- const dl=toDate(it.deadline)?`<span>Deadline ${esc(fmt(it.deadline))}</span>`:'';
- const linkText=it.key||'Open';
- const ref=it.url?`<a class="link" href="${esc(it.url)}" target="_blank" rel="noopener" aria-label="${esc(linkText)} (opens in new tab)">${esc(linkText)}${ICON_EXT}</a>`:it.key?`<span class="src">${esc(it.key)}</span>`:it.source?`<span class="src">${esc(it.source)}</span>`:'';
- const next=it.next?`<p class="next">${esc(it.next)}</p>`:'';
- return `<li class="row${late?' late':''}" id="r-${i}" data-i="${i}" style="--rgb:${it.heat.rgb};--ink:${it.heat.ink}"><span class="num" aria-hidden="true">${i+1}</span><div><h3><button class="rowbtn" type="button" aria-pressed="false" data-i="${i}">${esc(it.title)}</button></h3><p class="meta"><span class="q">${esc(Q[it.q].name)}</span><span>${esc(it.heat.name)}</span>${w}${by}${dl}${ref}</p>${next}</div></li>`;
-}).join('');
-
-const svg=$('scope'),fig=$('fig');
+// ---- The fire ---------------------------------------------------------------------------------
+const svg=$('scope'),fig=$('fig'),list=$('list');
 const STOPS=[[0,.2],[7,.38],[14,.54],[30,.75],[60,.94]];
 const RINGS=[[7,'1 wk'],[14,'2 wk'],[30,'30 d'],[60,'60 d']];
 const BANDS=[[.29,'White'],[.46,'Yellow'],[.645,'Orange'],[.845,'Cherry']];
@@ -196,7 +282,6 @@ const frac=d=>{if(d==null)return .965;if(d<0)return .12;for(let k=1;k<STOPS.leng
 const FIRE=[[0,'255 250 235',.38],[.2,'255 244 214',.28],[.38,'255 210 74',.19],[.54,'255 143 46',.14],[.75,'229 65 59',.11],[.94,'156 42 46',.09],[1,'60 22 66',.4]];
 const rad=a=>a*Math.PI/180;
 const gcd=(a,b)=>b?gcd(b,a%b):a;
-let sel=-1;
 
 // Spread each quadrant's pieces across its sector, then nudge apart any that overlap.
 function layout(cx,cy,R,br){
@@ -229,7 +314,7 @@ function layout(cx,cy,R,br){
 }
 
 function draw(){
- const W=fig.clientWidth;if(!W)return;
+ const W=fig.clientWidth;if(!W||!items.length)return;
  const cx=W/2,cy=W/2,pad=Math.max(16,W*.06),R=W/2-pad,br=Math.max(9,Math.min(12,R*.042)),T=1.6;
  svg.setAttribute('viewBox',`0 0 ${W} ${W}`);
  let s=`<defs><radialGradient id="fire" cx="${cx}" cy="${cy}" r="${R}" gradientUnits="userSpaceOnUse">${FIRE.map(([o,c,a])=>`<stop offset="${o}" stop-color="rgb(${c})" stop-opacity="${a}"/>`).join('')}</radialGradient>`+
@@ -254,7 +339,7 @@ const blip=i=>svg.querySelector(`.blip[data-i="${i}"]`),row=i=>$('r-'+i);
 function hl(i,on){blip(i)?.classList.toggle('hl',on);row(i)?.classList.toggle('hl',on)}
 function select(i,fromScope){
  sel=sel===i?-1:i;
- items.forEach((_,k)=>{const on=k===sel;row(k).classList.toggle('sel',on);row(k).querySelector('.rowbtn').setAttribute('aria-pressed',on);const b=blip(k);if(b){b.classList.toggle('sel',on);b.setAttribute('aria-pressed',on)}});
+ items.forEach((_,k)=>{const on=k===sel,r=row(k);if(r){r.classList.toggle('sel',on);r.querySelector('.rowbtn').setAttribute('aria-pressed',on)}const b=blip(k);if(b){b.classList.toggle('sel',on);b.setAttribute('aria-pressed',on)}});
  if(fromScope&&sel>=0)row(sel).scrollIntoView({block:'nearest',behavior:reduced?'auto':'smooth'});
 }
 svg.addEventListener('click',e=>{const g=e.target.closest('.blip');if(g)select(+g.dataset.i,true)});
@@ -264,14 +349,37 @@ svg.addEventListener('pointerout',e=>{const g=e.target.closest('.blip');if(g)hl(
 list.addEventListener('click',e=>{const b=e.target.closest('.rowbtn');if(b)select(+b.dataset.i,false)});
 list.addEventListener('pointerover',e=>{const r=e.target.closest('.row');if(r)hl(+r.dataset.i,true)});
 list.addEventListener('pointerout',e=>{const r=e.target.closest('.row');if(r&&!r.contains(e.relatedTarget))hl(+r.dataset.i,false)});
+$('legend').addEventListener('click',e=>{if(e.target.closest('[data-act="relight"]'))relight()});
 
 // One bellows breath: the fire flares and pieces light up from the hottest outward. Never loops.
 let litTimer;
 function relight(){fig.classList.remove('lit');void fig.offsetWidth;fig.classList.add('lit');clearTimeout(litTimer);litTimer=setTimeout(()=>fig.classList.remove('lit'),2800)}
-$('relight').addEventListener('click',relight);
 const ro=new ResizeObserver(draw);ro.observe(fig);
-draw();relight();
+
+// ---- Local files: picker and drag-and-drop. The file never leaves the browser. -------------------
+async function openFile(file){
+ if(!file)return;
+ try{render(JSON.parse(await file.text()),{from:file.name})}
+ catch{showError(new Error(`${file.name} isn't valid JSON. Use a crucible items file (see schema/crucible.schema.json).`))}
 }
+$('open').addEventListener('click',()=>$('file').click());
+$('file').addEventListener('change',e=>{openFile(e.target.files[0]);e.target.value=''});
+let dragDepth=0;
+addEventListener('dragenter',e=>{if([...e.dataTransfer.types].includes('Files')){dragDepth++;$('drop').hidden=false}});
+addEventListener('dragleave',()=>{if(--dragDepth<=0){dragDepth=0;$('drop').hidden=true}});
+addEventListener('dragover',e=>e.preventDefault());
+addEventListener('drop',e=>{e.preventDefault();dragDepth=0;$('drop').hidden=true;openFile(e.dataTransfer.files[0])});
+
+async function boot(){
+ $('note').textContent='Loading items…';
+ try{
+  const r=await load();
+  $('signout').hidden=!r.signedIn;
+  if(r.needSignIn){showSignIn();return}
+  render(r.doc,r);
+ }catch(err){showError(err)}
+}
+boot();
 }
 </script>
 </body>

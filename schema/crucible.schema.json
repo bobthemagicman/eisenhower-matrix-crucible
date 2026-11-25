@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/bobthemagicman/eisenhower-matrix-crucible/blob/main/schema/crucible.schema.json",
+  "title": "Crucible items document",
+  "description": "The data the Eisenhower matrix crucible shows. Written by people, by task-brazer, or by the crucible-items AI skill; read by index.html from a file, an S3 object, a DynamoDB item or any HTTPS URL.",
+  "type": "object",
+  "required": ["items"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "const": 1, "description": "Document format version. Omit or 1." },
+    "title": { "type": "string", "description": "Page title; also the headline when there is no goal." },
+    "brand": { "type": "string", "description": "Header text." },
+    "goal": {
+      "type": "object",
+      "description": "The headline counts down to this date.",
+      "required": ["label", "date"],
+      "additionalProperties": false,
+      "properties": {
+        "label": { "type": "string" },
+        "date": { "$ref": "#/$defs/when" }
+      }
+    },
+    "snapshot": { "$ref": "#/$defs/date", "description": "When the list was taken." },
+    "linkBase": { "$ref": "#/$defs/httpUrl", "description": "An item's key is appended to this to make its link." },
+    "quadrants": {
+      "type": "object",
+      "description": "Rename quadrants. A string sets the name; an object sets the name and the plain-language hint.",
+      "propertyNames": { "enum": ["1", "2", "3", "4"] },
+      "additionalProperties": {
+        "oneOf": [
+          { "type": "string", "minLength": 1 },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": { "name": { "type": "string", "minLength": 1 }, "hint": { "type": "string", "minLength": 1 } }
+          }
+        ]
+      }
+    },
+    "items": {
+      "type": "array",
+      "description": "In priority order: the number on each piece is its position. Reads best with up to about 20.",
+      "maxItems": 200,
+      "items": { "$ref": "#/$defs/item" }
+    }
+  },
+  "$defs": {
+    "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "when": {
+      "description": "A date, or a whole number of days from today (negative is in the past).",
+      "oneOf": [{ "$ref": "#/$defs/date" }, { "type": "integer" }]
+    },
+    "httpUrl": { "type": "string", "pattern": "^https?://" },
+    "item": {
+      "type": "object",
+      "required": ["q", "title"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "description": "Stable id, e.g. jira:OPS-12. Written by task-brazer; optional for hand-written files." },
+        "q": { "enum": [1, 2, 3, 4], "description": "1 Strike (do first), 2 Bank (schedule), 3 Striker (delegate), 4 Slag (eliminate)." },
+        "title": { "type": "string", "minLength": 1 },
+        "by": {
+          "description": "When the next step is due. Sets the heat and the distance from the center. null or absent: black heat, on the rim.",
+          "oneOf": [{ "$ref": "#/$defs/when" }, { "type": "null" }]
+        },
+        "deadline": { "$ref": "#/$defs/when", "description": "The outer deadline, if different from by. Shown in the list only." },
+        "next": { "type": "string", "description": "The next step, in a sentence." },
+        "key": { "type": "string", "description": "A ticket key. With linkBase it becomes a link." },
+        "url": { "$ref": "#/$defs/httpUrl", "description": "A link for the item; overrides linkBase." },
+        "source": { "type": "string", "description": "Where the item came from, shown when there is no key." }
+      }
+    }
+  }
+}
