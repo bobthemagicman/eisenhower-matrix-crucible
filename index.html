@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eisenhower Matrix Crucible</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: calm operator's console. A sage reading the board, not an alarm.
+   IDEA: an air-traffic radar scope; open work is inbound traffic, closer to center = due sooner.
+   PICTURE: one round scope cut into the four Eisenhower quadrants, numbered blips, one sweep on load.
+   COLOUR and TYPE: Afterglow (content-forge design-system/content-forge/MASTER.md): plum-black ground, glass,
+   lime/amber/pink accents; Aeonik if installed locally (never bundled: it is licensed), else Lato.
+   LAYOUT: scope left (sticky), numbered list right; stacks under 900px. */
+:root{color-scheme:dark;--bg:#0b0710;--glass:rgb(255 255 255/.04);--glass-hover:rgb(255 255 255/.07);--border:rgb(255 255 255/.09);--edge:rgb(255 255 255/.14);--strong:#fff;--text:#e5e5e5;--muted:#aaa;--on-accent:#303030;--magenta:#d92b83;--pink:#ee77ae;--amber:#f2a524;--danger:#ff6b6b;--hot:linear-gradient(95deg,#affc41 0%,#f2a524 55%,#ee77ae 100%);--display:"Aeonik","Lato",Arial,sans-serif;--sans:"Lato",Arial,sans-serif}
+:root[data-theme=light],:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{font-synthesis:none;background:var(--bg);-webkit-font-smoothing:antialiased}
+body{margin:0;min-height:100dvh;color:var(--text);font:16px/1.5 var(--sans);overflow-x:clip;background:radial-gradient(1100px 700px at 8% -8%,rgb(60 22 66/.95),transparent 70%),radial-gradient(800px 600px at 100% 4%,rgb(217 43 131/.2),transparent 70%),radial-gradient(900px 700px at 70% 55%,rgb(175 252 65/.06),transparent 70%),var(--bg);background-attachment:fixed}
+.wrap{width:100%;max-width:1440px;margin-inline:auto;padding-inline:16px}
+@media(min-width:768px){.wrap{padding-inline:24px}}
+@media(min-width:1280px){.wrap{padding-inline:48px}}
+header{border-bottom:2px solid transparent;border-image:var(--hot) 1;background:rgb(11 7 16/.6)}
+header .wrap{height:64px;display:flex;align-items:center;gap:12px}
+.mark{width:28px;height:28px;border-radius:6px;background:var(--hot);flex:none}
+.word{font:400 18px/1 var(--display);color:var(--strong)}
+.word span{color:var(--muted)}
+.label{font:400 12px/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase}
+main{padding-block:40px 64px}
+h1,h3{font-family:var(--display);font-weight:400;color:var(--strong);text-wrap:balance;margin:0}
+h1{font-size:clamp(32px,4.4vw,48px);line-height:1.05;letter-spacing:-.015em}
+.intro{max-width:70ch;margin:12px 0 0}
+.note{margin:6px 0 0;color:var(--muted);font-size:14px}
+.legend{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:24px 0 28px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:var(--glass);border:1px solid var(--border);color:var(--muted)}
+.chip b{color:var(--strong);font:700 14px/1 var(--sans);font-variant-numeric:tabular-nums}
+.dot{width:8px;height:8px;border-radius:50%;background:rgb(var(--rgb));flex:none}
+.btn{margin-left:auto;height:44px;padding:0 20px;border-radius:999px;border:1px solid var(--magenta);background:rgb(217 43 131/.08);color:var(--pink);cursor:pointer;transition:background .2s,color .2s}
+.btn:hover{background:var(--magenta);color:#fff}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+.grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:32px;align-items:start}
+.scope{position:sticky;top:24px;padding:12px;border-radius:18px;background:var(--glass);border:1px solid var(--border)}
+.fig{position:relative;aspect-ratio:1/1;width:min(100%,calc(100dvh - 72px));margin-inline:auto}
+.fig>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.sweep{position:absolute;border-radius:50%;pointer-events:none;opacity:0;background:conic-gradient(from 0deg,rgb(175 252 65/0) 0deg 280deg,rgb(175 252 65/.2) 358deg,rgb(175 252 65/.7) 360deg)}
+.disc{fill:rgb(60 22 66/.35);stroke:var(--edge)}
+.ring{fill:none;stroke:rgb(255 255 255/.1);stroke-dasharray:2 5}
+.axis{stroke:rgb(255 255 255/.12)}
+.rl{fill:var(--muted);font:400 12px var(--sans)}
+.ql{fill:var(--muted);font:400 12px var(--display);letter-spacing:.12em;text-transform:uppercase}
+.qn{fill:var(--strong);font:700 14px var(--sans)}
+.blip{cursor:pointer;outline:none}
+.blip .halo{fill:rgb(var(--rgb)/.16);transform-box:fill-box;transform-origin:center;transition:transform .2s ease,fill .2s}
+.blip .core{fill:rgb(var(--rgb));stroke:var(--bg);stroke-width:2}
+.blip text{fill:var(--on-accent);font:700 12px var(--sans);text-anchor:middle;pointer-events:none;font-variant-numeric:tabular-nums}
+.blip.late .core{stroke:var(--danger);stroke-dasharray:3 2}
+.blip:hover .halo,.blip.hl .halo,.blip:focus-visible .halo{transform:scale(1.35);fill:rgb(var(--rgb)/.3)}
+.blip:focus-visible .core{stroke:var(--amber);stroke-width:3}
+.blip.sel .core{stroke:#fff;stroke-width:3}
+.list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.row{position:relative;display:grid;grid-template-columns:28px minmax(0,1fr);gap:14px;padding:14px 16px;border-radius:16px;background:var(--glass);border:1px solid var(--border);transition:background .2s,border-color .2s,box-shadow .2s,transform .2s ease}
+.row:hover,.row.hl{background:var(--glass-hover);border-color:rgb(var(--rgb)/.55);box-shadow:0 22px 60px -24px rgb(var(--rgb)/.8)}
+.row.sel{background:rgb(175 252 65/.12);border-color:rgb(175 252 65/.45)}
+.num{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:rgb(var(--rgb));color:var(--on-accent);font:700 13px/1 var(--sans);font-variant-numeric:tabular-nums}
+.row h3{font:700 15px/1.4 var(--sans)}
+.rowbtn{all:unset;cursor:pointer}
+.rowbtn::after{content:"";position:absolute;inset:0;border-radius:16px}
+.rowbtn:focus-visible::after{outline:2px solid var(--amber);outline-offset:4px}
+.meta{margin:2px 0 0;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums;display:flex;flex-wrap:wrap;gap:2px 10px;align-items:center}
+.meta .late{color:var(--danger);display:inline-flex;gap:4px;align-items:center}
+.next{margin:6px 0 0;font-size:14px;line-height:1.5;max-width:70ch}
+.link{position:relative;z-index:1;color:var(--text);text-decoration:underline 1px var(--magenta);text-underline-offset:3px;display:inline-flex;align-items:center;gap:4px;min-height:24px;white-space:nowrap}
+.link:hover{color:#fff;text-decoration-thickness:2px}
+.src{white-space:nowrap}
+.empty{padding:32px;border-radius:18px;background:var(--glass);border:1px solid var(--border);max-width:60ch}
+footer{color:var(--muted);font-size:14px;margin-top:40px;max-width:70ch}
+code{font-size:.9em;color:var(--strong)}
+@media(prefers-reduced-motion:no-preference){
+ .row:hover{transform:translateY(-2px)}
+ .scan .sweep{animation:sweep 2.6s linear 1 forwards}
+ .scan .blip{opacity:0;animation:blipIn .45s ease forwards}
+}
+@keyframes sweep{0%{transform:rotate(-90deg);opacity:1}90%{opacity:1}100%{transform:rotate(270deg);opacity:0}}
+@keyframes blipIn{to{opacity:1}}
+@media(max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}.scope{position:static;max-width:620px;width:100%;margin-inline:auto}}
+@media(max-width:600px){.btn{margin-left:0}main{padding-top:28px}}
+@media(forced-colors:active){header{border-image:none;border-bottom-color:CanvasText}}
+</style>
+<!-- Sample items ship with the repo. Your own items go in items.js (git-ignored); see README. -->
+<script src="sample-items.js"></script>
+<script src="items.js" onerror="this.remove()"></script>
+</head>
+<body>
+<header><div class="wrap"><span class="mark" aria-hidden="true"></span><span class="word" id="brand">eisenhower matrix <span>/ crucible</span></span></div></header>
+<main class="wrap">
+ <h1 id="headline">Eisenhower matrix</h1>
+ <p class="intro" id="intro">Your most important open items, sorted the Eisenhower way. Each quarter of the scope is one quadrant, and the closer a blip sits to the center, the sooner its next step is due.</p>
+ <p class="note" id="note"></p>
+ <div class="legend" id="legend"></div>
+ <div class="grid" id="grid">
+  <section class="scope" aria-label="Radar scope"><div class="fig" id="fig"><div class="sweep" id="sweep" aria-hidden="true"></div><svg id="scope" role="group" aria-label="Items placed by quadrant and due date"></svg></div></section>
+  <section aria-label="Items in priority order"><ol class="list" id="list"></ol></section>
+ </div>
+ <footer>Rings mark one week, two weeks, 30 days and 60 days from today. Items with no date sit on the outer edge. Selecting a blip highlights its row, and the other way round.</footer>
+</main>
+<script>
+{
+const data=window.CRUCIBLE||window.CRUCIBLE_SAMPLE||{items:[]};
+const isSample=!window.CRUCIBLE;
+const DEFAULT_NAMES={1:'Do first',2:'Schedule',3:'Delegate',4:'Eliminate'};
+const names=Object.assign({},DEFAULT_NAMES,data.quadrants||{});
+const Q={1:{rgb:'175 252 65',lo:270,hi:360},2:{rgb:'242 165 36',lo:0,hi:90},3:{rgb:'238 119 174',lo:180,hi:270},4:{rgb:'170 170 170',lo:90,hi:180}};
+[1,2,3,4].forEach(q=>Q[q].name=String(names[q]));
+
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+const toDate=v=>{if(typeof v==='number'){const d=new Date(today);d.setDate(d.getDate()+v);return d}if(typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)){const[y,m,d]=v.split('-').map(Number);return new Date(y,m-1,d)}return null};
+const daysTo=v=>{const d=toDate(v);return d?Math.round((d-today)/864e5):null};
+const fmt=v=>toDate(v).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+const when=d=>d==null?'No date':d<0?`${-d} day${d===-1?'':'s'} overdue`:d===0?'Due today':d===1?'Due tomorrow':`In ${d} days`;
+const safeUrl=u=>typeof u==='string'&&/^https?:\/\//i.test(u)?u:null;
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const items=(Array.isArray(data.items)?data.items:[]).filter(it=>{
+ const ok=it&&[1,2,3,4].includes(it.q)&&typeof it.title==='string';
+ if(!ok)console.warn('Skipped an item: it needs q (1-4) and title.',it);
+ return ok;
+});
+items.forEach(it=>{it.d=daysTo(it.by);it.url=safeUrl(it.url)||(it.key&&safeUrl(data.linkBase)?data.linkBase+encodeURIComponent(it.key):null)});
+
+const $=id=>document.getElementById(id);
+if(data.brand)$('brand').textContent=data.brand;
+if(data.title)document.title=data.title;
+const goalDays=data.goal?daysTo(data.goal.date):null;
+$('headline').textContent=data.goal&&goalDays!=null?(goalDays>0?`${goalDays} day${goalDays===1?'':'s'} to ${data.goal.label}`:`${data.goal.label}: the date has arrived`):(data.title||'Eisenhower matrix');
+$('note').textContent=isSample?'Showing sample items. Add an items.js beside this page to see your own (see README).':data.snapshot?`Snapshot taken ${fmt(data.snapshot)}. Blips move inward as the days pass, but the items themselves don't update.`:'';
+
+const ICON_EXT='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>';
+const ICON_ALERT='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>';
+
+const counts=[1,2,3,4].map(q=>items.filter(i=>i.q===q).length);
+$('legend').innerHTML=[1,2,3,4].map(q=>`<span class="chip label" style="--rgb:${Q[q].rgb}"><span class="dot"></span>${esc(Q[q].name)} <b>${counts[q-1]}</b></span>`).join('')+'<button class="btn label" id="rescan" type="button">Sweep again</button>';
+
+if(!items.length){
+ $('grid').outerHTML='<div class="empty"><h3>No items to show</h3><p class="next">Add items to <code>items.js</code> (copy <code>sample-items.js</code> to start). Each needs a quadrant <code>q</code> from 1 to 4 and a <code>title</code>.</p></div>';
+}else{
+const list=$('list');
+list.innerHTML=items.map((it,i)=>{
+ const late=it.d!=null&&it.d<0;
+ const w=late?`<span class="late">${ICON_ALERT}${esc(when(it.d))}</span>`:`<span>${esc(when(it.d))}</span>`;
+ const by=it.d!=null?`<span>Act by ${esc(fmt(it.by))}</span>`:'';
+ const dl=toDate(it.deadline)?`<span>Deadline ${esc(fmt(it.deadline))}</span>`:'';
+ const linkText=it.key||'Open';
+ const ref=it.url?`<a class="link" href="${esc(it.url)}" target="_blank" rel="noopener" aria-label="${esc(linkText)} (opens in new tab)">${esc(linkText)}${ICON_EXT}</a>`:it.key?`<span class="src">${esc(it.key)}</span>`:it.source?`<span class="src">${esc(it.source)}</span>`:'';
+ const next=it.next?`<p class="next">${esc(it.next)}</p>`:'';
+ return `<li class="row" id="r-${i}" data-i="${i}" style="--rgb:${Q[it.q].rgb}"><span class="num" aria-hidden="true">${i+1}</span><div><h3><button class="rowbtn" type="button" aria-pressed="false" data-i="${i}">${esc(it.title)}</button></h3><p class="meta"><span>${esc(Q[it.q].name)}</span>${w}${by}${dl}${ref}</p>${next}</div></li>`;
+}).join('');
+
+const svg=$('scope'),fig=$('fig'),sweep=$('sweep');
+const STOPS=[[0,.2],[7,.38],[14,.54],[30,.75],[60,.94]];
+const RINGS=[[7,'1 wk'],[14,'2 wk'],[30,'30 d'],[60,'60 d']];
+const frac=d=>{if(d==null)return .965;if(d<0)return .14;for(let k=1;k<STOPS.length;k++){const[a,fa]=STOPS[k-1],[b,fb]=STOPS[k];if(d<=b)return fa+(fb-fa)*(d-a)/(b-a)}return .94};
+const rad=a=>a*Math.PI/180;
+const gcd=(a,b)=>b?gcd(b,a%b):a;
+let sel=-1;
+
+// Spread each quadrant's blips across its sector, then nudge apart any that overlap.
+function layout(cx,cy,R,br){
+ const P=items.map(it=>({it,lo:Q[it.q].lo,hi:Q[it.q].hi,r0:frac(it.d)*R}));
+ [1,2,3,4].forEach(q=>{
+  const g=P.filter(p=>p.it.q===q).sort((a,b)=>a.r0-b.r0),n=g.length;
+  let step=Math.max(1,Math.round(n*.618));while(n>1&&gcd(step,n)!==1)step++;
+  g.forEach((p,k)=>{const slot=n>1?(k*step)%n:0,span=p.hi-p.lo-18;p.th=p.lo+9+(slot+.5)*span/n});
+ });
+ const place=(p,th,r)=>{p.th=th;p.r=r;p.x=cx+r*Math.sin(rad(th));p.y=cy-r*Math.cos(rad(th))};
+ P.forEach(p=>place(p,p.th,p.r0));
+ const min=2*br+3;
+ for(let iter=0;iter<120;iter++){
+  let moved=false;
+  for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++){
+   const a=P[i],b=P[j],dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||.01;
+   if(d<min){const k=(min-d)/2/d;a.x-=dx*k;a.y-=dy*k;b.x+=dx*k;b.y+=dy*k;moved=true}
+  }
+  P.forEach(p=>{
+   let th=(Math.atan2(p.x-cx,-(p.y-cy))*180/Math.PI+360)%360;
+   if(p.lo===270&&th<90)th+=360;if(p.lo===0&&th>270)th-=360;
+   th=Math.min(p.hi-4,Math.max(p.lo+4,th));
+   let r=Math.hypot(p.x-cx,p.y-cy);
+   r=Math.min(p.r0+R*.1,Math.max(p.r0-R*.06,r));r=Math.min(R-br-2,Math.max(br+4,r));
+   place(p,th,r);
+  });
+  if(!moved)break;
+ }
+ return P;
+}
+
+function draw(){
+ const W=fig.clientWidth;if(!W)return;
+ const cx=W/2,cy=W/2,pad=Math.max(16,W*.06),R=W/2-pad,br=Math.max(9,Math.min(12,R*.042)),T=2.6;
+ svg.setAttribute('viewBox',`0 0 ${W} ${W}`);
+ Object.assign(sweep.style,{left:`${cx-R}px`,top:`${cy-R}px`,width:`${2*R}px`,height:`${2*R}px`});
+ let s=`<circle class="disc" cx="${cx}" cy="${cy}" r="${R}"/>`;
+ RINGS.forEach(([d])=>{s+=`<circle class="ring" cx="${cx}" cy="${cy}" r="${frac(d)*R}"/>`});
+ s+=`<line class="axis" x1="${cx-R}" y1="${cy}" x2="${cx+R}" y2="${cy}"/><line class="axis" x1="${cx}" y1="${cy-R}" x2="${cx}" y2="${cy+R}"/>`;
+ RINGS.forEach(([d,l])=>{s+=`<text class="rl" x="${cx+6}" y="${cy+frac(d)*R-5}">${l}</text>`});
+ s+=`<circle cx="${cx}" cy="${cy}" r="3" fill="#fff"/>`;
+ const corner=(q,x,y,end)=>{const a=end?'end':'start',dx=end?x-4:x+4,tx=end?x-14:x+14;return `<circle cx="${dx}" cy="${y-4}" r="4" fill="rgb(${Q[q].rgb})"/><text class="ql" x="${tx}" y="${y}" text-anchor="${a}">${esc(Q[q].name)}</text><text class="qn" x="${tx}" y="${y+18}" text-anchor="${a}">${counts[q-1]}</text>`};
+ s+=corner(1,4,16,false)+corner(2,W-4,16,true)+corner(3,4,W-22,false)+corner(4,W-4,W-22,true);
+ layout(cx,cy,R,br).forEach((p,i)=>{
+  const it=p.it,delay=(((p.th-270)%360+360)%360)/360*T;
+  const cls=`blip${sel===i?' sel':''}${it.d!=null&&it.d<0?' late':''}`;
+  const label=`${i+1}. ${it.title}. ${Q[it.q].name}. ${when(it.d)}.`;
+  s+=`<g class="${cls}" data-i="${i}" tabindex="0" role="button" aria-pressed="${sel===i}" aria-label="${esc(label)}" style="--rgb:${Q[it.q].rgb};animation-delay:${delay.toFixed(2)}s" transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})"><circle class="halo" r="${br*2}"/><circle class="core" r="${br}"/><text dy="0.35em">${i+1}</text></g>`;
+ });
+ svg.innerHTML=s;
+}
+
+const blip=i=>svg.querySelector(`.blip[data-i="${i}"]`),row=i=>$('r-'+i);
+function hl(i,on){blip(i)?.classList.toggle('hl',on);row(i)?.classList.toggle('hl',on)}
+function select(i,fromScope){
+ sel=sel===i?-1:i;
+ items.forEach((_,k)=>{const on=k===sel;row(k).classList.toggle('sel',on);row(k).querySelector('.rowbtn').setAttribute('aria-pressed',on);const b=blip(k);if(b){b.classList.toggle('sel',on);b.setAttribute('aria-pressed',on)}});
+ if(fromScope&&sel>=0)row(sel).scrollIntoView({block:'nearest',behavior:reduced?'auto':'smooth'});
+}
+svg.addEventListener('click',e=>{const g=e.target.closest('.blip');if(g)select(+g.dataset.i,true)});
+svg.addEventListener('keydown',e=>{const g=e.target.closest('.blip');if(g&&(e.key==='Enter'||e.key===' ')){e.preventDefault();select(+g.dataset.i,true)}});
+svg.addEventListener('pointerover',e=>{const g=e.target.closest('.blip');if(g)hl(+g.dataset.i,true)});
+svg.addEventListener('pointerout',e=>{const g=e.target.closest('.blip');if(g)hl(+g.dataset.i,false)});
+list.addEventListener('click',e=>{const b=e.target.closest('.rowbtn');if(b)select(+b.dataset.i,false)});
+list.addEventListener('pointerover',e=>{const r=e.target.closest('.row');if(r)hl(+r.dataset.i,true)});
+list.addEventListener('pointerout',e=>{const r=e.target.closest('.row');if(r&&!r.contains(e.relatedTarget))hl(+r.dataset.i,false)});
+
+let scanTimer;
+function scan(){fig.classList.remove('scan');void fig.offsetWidth;fig.classList.add('scan');clearTimeout(scanTimer);scanTimer=setTimeout(()=>fig.classList.remove('scan'),3400)}
+$('rescan').addEventListener('click',scan);
+const ro=new ResizeObserver(draw);ro.observe(fig);
+draw();scan();
+}
+}
+</script>
+</body>
+</html>

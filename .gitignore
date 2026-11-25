@@ -1,0 +1,9 @@
+# Your own items. Never committed: they are private.
+items.js
+items.*.js
+
+# Licensed fonts are not redistributable.
+*.woff
+*.woff2
+
+.DS_Store
