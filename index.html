@@ -8,23 +8,23 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-/* VOICE: calm operator's console. A sage reading the board, not an alarm.
-   IDEA: an air-traffic radar scope; open work is inbound traffic, closer to center = due sooner.
-   PICTURE: one round scope cut into the four Eisenhower quadrants, numbered blips, one sweep on load.
-   COLOUR and TYPE: Afterglow (content-forge design-system/content-forge/MASTER.md): plum-black ground, glass,
-   lime/amber/pink accents; Aeonik if installed locally (never bundled: it is licensed), else Lato.
-   LAYOUT: scope left (sticky), numbered list right; stacks under 900px. */
-:root{color-scheme:dark;--bg:#0b0710;--glass:rgb(255 255 255/.04);--glass-hover:rgb(255 255 255/.07);--border:rgb(255 255 255/.09);--edge:rgb(255 255 255/.14);--strong:#fff;--text:#e5e5e5;--muted:#aaa;--on-accent:#303030;--magenta:#d92b83;--pink:#ee77ae;--amber:#f2a524;--danger:#ff6b6b;--hot:linear-gradient(95deg,#affc41 0%,#f2a524 55%,#ee77ae 100%);--display:"Aeonik","Lato",Arial,sans-serif;--sans:"Lato",Arial,sans-serif}
+/* VOICE: calm smith at the anvil. Reads the fire, says what to strike.
+   IDEA: a forge fire seen from above; heat = urgency, the white-hot center is due now, the cooling rim can wait.
+   PICTURE: one round fire bed cut into the four Eisenhower quadrants (Strike, Bank, Striker, Slag), numbered pieces glowing in their heat color.
+   COLOUR and TYPE: Afterglow ground and glass (content-forge MASTER.md) with blacksmith heat colors (white, yellow, orange, cherry, dull red, black heat);
+   Aeonik if installed locally (never bundled: it is licensed), else Lato.
+   LAYOUT: fire left (sticky), numbered list right; stacks under 900px. */
+:root{color-scheme:dark;--bg:#0b0710;--glass:rgb(255 255 255/.04);--glass-hover:rgb(255 255 255/.07);--border:rgb(255 255 255/.09);--edge:rgb(255 255 255/.14);--strong:#fff;--text:#e5e5e5;--muted:#aaa;--magenta:#d92b83;--pink:#ee77ae;--amber:#f2a524;--danger:#ff6b6b;--heat:linear-gradient(95deg,#fff4d6 0%,#ffd24a 28%,#ff8f2e 55%,#e5413b 80%,#9c2a2e 100%);--display:"Aeonik","Lato",Arial,sans-serif;--sans:"Lato",Arial,sans-serif}
 :root[data-theme=light],:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
 html{font-synthesis:none;background:var(--bg);-webkit-font-smoothing:antialiased}
-body{margin:0;min-height:100dvh;color:var(--text);font:16px/1.5 var(--sans);overflow-x:clip;background:radial-gradient(1100px 700px at 8% -8%,rgb(60 22 66/.95),transparent 70%),radial-gradient(800px 600px at 100% 4%,rgb(217 43 131/.2),transparent 70%),radial-gradient(900px 700px at 70% 55%,rgb(175 252 65/.06),transparent 70%),var(--bg);background-attachment:fixed}
+body{margin:0;min-height:100dvh;color:var(--text);font:16px/1.5 var(--sans);overflow-x:clip;background:radial-gradient(1100px 700px at 8% -8%,rgb(60 22 66/.95),transparent 70%),radial-gradient(800px 600px at 100% 4%,rgb(217 43 131/.18),transparent 70%),radial-gradient(900px 700px at 30% 70%,rgb(255 143 46/.07),transparent 70%),var(--bg);background-attachment:fixed}
 .wrap{width:100%;max-width:1440px;margin-inline:auto;padding-inline:16px}
 @media(min-width:768px){.wrap{padding-inline:24px}}
 @media(min-width:1280px){.wrap{padding-inline:48px}}
-header{border-bottom:2px solid transparent;border-image:var(--hot) 1;background:rgb(11 7 16/.6)}
+header{border-bottom:2px solid transparent;border-image:var(--heat) 1;background:rgb(11 7 16/.6)}
 header .wrap{height:64px;display:flex;align-items:center;gap:12px}
-.mark{width:28px;height:28px;border-radius:6px;background:var(--hot);flex:none}
+.mark{width:28px;height:28px;border-radius:6px;background:radial-gradient(circle at 50% 50%,#fff4d6 0%,#ffd24a 30%,#ff8f2e 55%,#e5413b 80%,#9c2a2e 100%);flex:none}
 .word{font:400 18px/1 var(--display);color:var(--strong)}
 .word span{color:var(--muted)}
 .label{font:400 12px/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase}
@@ -33,42 +33,52 @@ h1,h3{font-family:var(--display);font-weight:400;color:var(--strong);text-wrap:b
 h1{font-size:clamp(32px,4.4vw,48px);line-height:1.05;letter-spacing:-.015em}
 .intro{max-width:70ch;margin:12px 0 0}
 .note{margin:6px 0 0;color:var(--muted);font-size:14px}
-.legend{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:24px 0 28px}
-.chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:var(--glass);border:1px solid var(--border);color:var(--muted)}
-.chip b{color:var(--strong);font:700 14px/1 var(--sans);font-variant-numeric:tabular-nums}
-.dot{width:8px;height:8px;border-radius:50%;background:rgb(var(--rgb));flex:none}
+.legend{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:24px 0 14px}
+.chip{display:inline-flex;align-items:baseline;gap:8px;padding:9px 14px;border-radius:999px;background:var(--glass);border:1px solid var(--border);color:var(--strong)}
+.chip .hint{color:var(--muted);font-size:14px}
+.chip b{font:700 14px/1 var(--sans);font-variant-numeric:tabular-nums}
 .btn{margin-left:auto;height:44px;padding:0 20px;border-radius:999px;border:1px solid var(--magenta);background:rgb(217 43 131/.08);color:var(--pink);cursor:pointer;transition:background .2s,color .2s}
 .btn:hover{background:var(--magenta);color:#fff}
+.heats{list-style:none;margin:0 0 28px;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:10px 4px}
+.heats li{font-size:14px;color:var(--muted);line-height:1.35}
+.heats .bar{display:block;height:8px;border-radius:2px;background:rgb(var(--rgb));margin-bottom:6px;box-shadow:0 0 16px -2px rgb(var(--rgb)/.6)}
+.heats li:first-child .bar{border-radius:999px 2px 2px 999px;outline:1px dashed var(--danger);outline-offset:2px}
+.heats li:last-child .bar{border-radius:2px 999px 999px 2px;box-shadow:none}
+.heats b{color:var(--strong);font-weight:700;font-variant-numeric:tabular-nums}
 :focus-visible{outline:2px solid var(--amber);outline-offset:3px}
 .grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:32px;align-items:start}
 .scope{position:sticky;top:24px;padding:12px;border-radius:18px;background:var(--glass);border:1px solid var(--border)}
 .fig{position:relative;aspect-ratio:1/1;width:min(100%,calc(100dvh - 72px));margin-inline:auto}
 .fig>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.sweep{position:absolute;border-radius:50%;pointer-events:none;opacity:0;background:conic-gradient(from 0deg,rgb(175 252 65/0) 0deg 280deg,rgb(175 252 65/.2) 358deg,rgb(175 252 65/.7) 360deg)}
-.disc{fill:rgb(60 22 66/.35);stroke:var(--edge)}
-.ring{fill:none;stroke:rgb(255 255 255/.1);stroke-dasharray:2 5}
+.ring{fill:none;stroke:rgb(255 255 255/.12);stroke-dasharray:2 5}
+.rim{fill:none;stroke:var(--edge)}
 .axis{stroke:rgb(255 255 255/.12)}
-.rl{fill:var(--muted);font:400 12px var(--sans)}
-.ql{fill:var(--muted);font:400 12px var(--display);letter-spacing:.12em;text-transform:uppercase}
-.qn{fill:var(--strong);font:700 14px var(--sans)}
+.rl,.bl{font:400 12px var(--sans);paint-order:stroke;stroke:rgb(11 7 16/.85);stroke-width:3px;stroke-linejoin:round}
+.rl{fill:var(--muted)}
+.bl{fill:var(--text)}
+.ql{fill:var(--strong);font:400 12px var(--display);letter-spacing:.12em;text-transform:uppercase}
+.qn{fill:var(--muted);font:400 13px var(--sans)}
+.flare{opacity:.55}
 .blip{cursor:pointer;outline:none}
-.blip .halo{fill:rgb(var(--rgb)/.16);transform-box:fill-box;transform-origin:center;transition:transform .2s ease,fill .2s}
+.blip .halo{fill:rgb(var(--rgb)/.2);transform-box:fill-box;transform-origin:center;transition:transform .2s ease,fill .2s}
 .blip .core{fill:rgb(var(--rgb));stroke:var(--bg);stroke-width:2}
-.blip text{fill:var(--on-accent);font:700 12px var(--sans);text-anchor:middle;pointer-events:none;font-variant-numeric:tabular-nums}
-.blip.late .core{stroke:var(--danger);stroke-dasharray:3 2}
-.blip:hover .halo,.blip.hl .halo,.blip:focus-visible .halo{transform:scale(1.35);fill:rgb(var(--rgb)/.3)}
-.blip:focus-visible .core{stroke:var(--amber);stroke-width:3}
-.blip.sel .core{stroke:#fff;stroke-width:3}
+.blip text{fill:var(--ink);font:700 12px var(--sans);text-anchor:middle;pointer-events:none;font-variant-numeric:tabular-nums}
+.blip.late .core{stroke:var(--danger);stroke-width:2.5;stroke-dasharray:3 2}
+.blip:hover .halo,.blip.hl .halo,.blip:focus-visible .halo{transform:scale(1.35);fill:rgb(var(--rgb)/.34)}
+.blip:focus-visible .core{stroke:var(--amber);stroke-width:3;stroke-dasharray:none}
+.blip.sel .core{stroke:#fff;stroke-width:3;stroke-dasharray:none}
 .list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .row{position:relative;display:grid;grid-template-columns:28px minmax(0,1fr);gap:14px;padding:14px 16px;border-radius:16px;background:var(--glass);border:1px solid var(--border);transition:background .2s,border-color .2s,box-shadow .2s,transform .2s ease}
 .row:hover,.row.hl{background:var(--glass-hover);border-color:rgb(var(--rgb)/.55);box-shadow:0 22px 60px -24px rgb(var(--rgb)/.8)}
 .row.sel{background:rgb(175 252 65/.12);border-color:rgb(175 252 65/.45)}
-.num{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:rgb(var(--rgb));color:var(--on-accent);font:700 13px/1 var(--sans);font-variant-numeric:tabular-nums}
+.num{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:rgb(var(--rgb));color:var(--ink);font:700 13px/1 var(--sans);font-variant-numeric:tabular-nums;box-shadow:0 0 14px -2px rgb(var(--rgb)/.7)}
+.row.late .num{outline:2px dashed var(--danger);outline-offset:2px}
 .row h3{font:700 15px/1.4 var(--sans)}
 .rowbtn{all:unset;cursor:pointer}
 .rowbtn::after{content:"";position:absolute;inset:0;border-radius:16px}
 .rowbtn:focus-visible::after{outline:2px solid var(--amber);outline-offset:4px}
 .meta{margin:2px 0 0;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums;display:flex;flex-wrap:wrap;gap:2px 10px;align-items:center}
+.meta .q{color:var(--text)}
 .meta .late{color:var(--danger);display:inline-flex;gap:4px;align-items:center}
 .next{margin:6px 0 0;font-size:14px;line-height:1.5;max-width:70ch}
 .link{position:relative;z-index:1;color:var(--text);text-decoration:underline 1px var(--magenta);text-underline-offset:3px;display:inline-flex;align-items:center;gap:4px;min-height:24px;white-space:nowrap}
@@ -76,14 +86,16 @@ h1{font-size:clamp(32px,4.4vw,48px);line-height:1.05;letter-spacing:-.015em}
 .src{white-space:nowrap}
 .empty{padding:32px;border-radius:18px;background:var(--glass);border:1px solid var(--border);max-width:60ch}
 footer{color:var(--muted);font-size:14px;margin-top:40px;max-width:70ch}
+footer p{margin:0 0 8px}
+footer b{color:var(--text);font-weight:700}
 code{font-size:.9em;color:var(--strong)}
 @media(prefers-reduced-motion:no-preference){
  .row:hover{transform:translateY(-2px)}
- .scan .sweep{animation:sweep 2.6s linear 1 forwards}
- .scan .blip{opacity:0;animation:blipIn .45s ease forwards}
+ .lit .flare{animation:flare 2.4s ease-out 1}
+ .lit .blip{opacity:0;animation:glowIn .5s ease forwards}
 }
-@keyframes sweep{0%{transform:rotate(-90deg);opacity:1}90%{opacity:1}100%{transform:rotate(270deg);opacity:0}}
-@keyframes blipIn{to{opacity:1}}
+@keyframes flare{0%{opacity:.15}35%{opacity:1}100%{opacity:.55}}
+@keyframes glowIn{to{opacity:1}}
 @media(max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}.scope{position:static;max-width:620px;width:100%;margin-inline:auto}}
 @media(max-width:600px){.btn{margin-left:0}main{padding-top:28px}}
 @media(forced-colors:active){header{border-image:none;border-bottom-color:CanvasText}}
@@ -96,23 +108,39 @@ code{font-size:.9em;color:var(--strong)}
 <header><div class="wrap"><span class="mark" aria-hidden="true"></span><span class="word" id="brand">eisenhower matrix <span>/ crucible</span></span></div></header>
 <main class="wrap">
  <h1 id="headline">Eisenhower matrix</h1>
- <p class="intro" id="intro">Your most important open items, sorted the Eisenhower way. Each quarter of the scope is one quadrant, and the closer a blip sits to the center, the sooner its next step is due.</p>
+ <p class="intro">Your most important open items, sorted the Eisenhower way and read like a forge. Each quarter of the fire is one quadrant. The hotter a piece glows and the closer it sits to the center, the sooner its next step is due.</p>
  <p class="note" id="note"></p>
  <div class="legend" id="legend"></div>
+ <ul class="heats" id="heats" aria-label="Heat scale"></ul>
  <div class="grid" id="grid">
-  <section class="scope" aria-label="Radar scope"><div class="fig" id="fig"><div class="sweep" id="sweep" aria-hidden="true"></div><svg id="scope" role="group" aria-label="Items placed by quadrant and due date"></svg></div></section>
+  <section class="scope" aria-label="Forge fire"><div class="fig" id="fig"><svg id="scope" role="group" aria-label="Items placed by quadrant and heat"></svg></div></section>
   <section aria-label="Items in priority order"><ol class="list" id="list"></ol></section>
  </div>
- <footer>Rings mark one week, two weeks, 30 days and 60 days from today. Items with no date sit on the outer edge. Selecting a blip highlights its row, and the other way round.</footer>
+ <footer>
+  <p><b>Strike</b> do it now, while the iron is hot. <b>Bank</b> schedule it: bank the fire and come back. <b>Striker</b> delegate it: the striker is the smith’s helper on the sledge. <b>Slag</b> skim it off and drop it.</p>
+  <p>Rings mark one week, two weeks, 30 days and 60 days from today. Items with no date sit at black heat on the rim. Selecting a piece highlights its row, and the other way round.</p>
+ </footer>
 </main>
 <script>
 {
 const data=window.CRUCIBLE||window.CRUCIBLE_SAMPLE||{items:[]};
 const isSample=!window.CRUCIBLE;
-const DEFAULT_NAMES={1:'Do first',2:'Schedule',3:'Delegate',4:'Eliminate'};
-const names=Object.assign({},DEFAULT_NAMES,data.quadrants||{});
-const Q={1:{rgb:'175 252 65',lo:270,hi:360},2:{rgb:'242 165 36',lo:0,hi:90},3:{rgb:'238 119 174',lo:180,hi:270},4:{rgb:'170 170 170',lo:90,hi:180}};
-[1,2,3,4].forEach(q=>Q[q].name=String(names[q]));
+
+// Quadrants: sector of the fire (degrees clockwise from north) and the smith's name for each.
+const Q={1:{name:'Strike',hint:'Do first',lo:270,hi:360},2:{name:'Bank',hint:'Schedule',lo:0,hi:90},3:{name:'Striker',hint:'Delegate',lo:180,hi:270},4:{name:'Slag',hint:'Eliminate',lo:90,hi:180}};
+Object.entries(data.quadrants||{}).forEach(([k,v])=>{if(!Q[k])return;if(typeof v==='string')Q[k].name=v;else if(v&&typeof v==='object'){if(v.name)Q[k].name=String(v.name);if(v.hint)Q[k].hint=String(v.hint)}});
+
+// Blacksmith heat colors, hottest first. An item's heat comes from how soon its next step is due.
+const HEATS=[
+ {name:'Burning',hint:'overdue',rgb:'255 255 255',ink:'#303030'},
+ {name:'White heat',hint:'this week',rgb:'255 244 214',ink:'#303030',max:7},
+ {name:'Yellow heat',hint:'within 2 weeks',rgb:'255 210 74',ink:'#303030',max:14},
+ {name:'Orange heat',hint:'within 30 days',rgb:'255 143 46',ink:'#303030',max:30},
+ {name:'Cherry red',hint:'within 60 days',rgb:'229 65 59',ink:'#1a0d10',max:60},
+ {name:'Dull red',hint:'later',rgb:'156 42 46',ink:'#ffffff',max:Infinity},
+ {name:'Black heat',hint:'no date',rgb:'110 96 104',ink:'#ffffff'}
+];
+const heatOf=d=>d==null?HEATS[6]:d<0?HEATS[0]:HEATS.slice(1,6).find(h=>d<=h.max);
 
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
@@ -128,23 +156,24 @@ const items=(Array.isArray(data.items)?data.items:[]).filter(it=>{
  if(!ok)console.warn('Skipped an item: it needs q (1-4) and title.',it);
  return ok;
 });
-items.forEach(it=>{it.d=daysTo(it.by);it.url=safeUrl(it.url)||(it.key&&safeUrl(data.linkBase)?data.linkBase+encodeURIComponent(it.key):null)});
+items.forEach(it=>{it.d=daysTo(it.by);it.heat=heatOf(it.d);it.url=safeUrl(it.url)||(it.key&&safeUrl(data.linkBase)?data.linkBase+encodeURIComponent(it.key):null)});
 
 const $=id=>document.getElementById(id);
 if(data.brand)$('brand').textContent=data.brand;
 if(data.title)document.title=data.title;
 const goalDays=data.goal?daysTo(data.goal.date):null;
 $('headline').textContent=data.goal&&goalDays!=null?(goalDays>0?`${goalDays} day${goalDays===1?'':'s'} to ${data.goal.label}`:`${data.goal.label}: the date has arrived`):(data.title||'Eisenhower matrix');
-$('note').textContent=isSample?'Showing sample items. Add an items.js beside this page to see your own (see README).':data.snapshot?`Snapshot taken ${fmt(data.snapshot)}. Blips move inward as the days pass, but the items themselves don't update.`:'';
+$('note').textContent=isSample?'Showing sample items. Add an items.js beside this page to see your own (see README).':data.snapshot?`Snapshot taken ${fmt(data.snapshot)}. Pieces heat up as the days pass, but the items themselves don't update.`:'';
 
 const ICON_EXT='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>';
 const ICON_ALERT='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>';
 
 const counts=[1,2,3,4].map(q=>items.filter(i=>i.q===q).length);
-$('legend').innerHTML=[1,2,3,4].map(q=>`<span class="chip label" style="--rgb:${Q[q].rgb}"><span class="dot"></span>${esc(Q[q].name)} <b>${counts[q-1]}</b></span>`).join('')+'<button class="btn label" id="rescan" type="button">Sweep again</button>';
+$('legend').innerHTML=[1,2,3,4].map(q=>`<span class="chip"><span class="label">${esc(Q[q].name)}</span><span class="hint">${esc(Q[q].hint)}</span><b>${counts[q-1]}</b></span>`).join('')+'<button class="btn label" id="relight" type="button">Work the bellows</button>';
+$('heats').innerHTML=HEATS.map(h=>`<li style="--rgb:${h.rgb}"><span class="bar"></span><b>${items.filter(i=>i.heat===h).length}</b> ${esc(h.name)}<br>${esc(h.hint)}</li>`).join('');
 
 if(!items.length){
- $('grid').outerHTML='<div class="empty"><h3>No items to show</h3><p class="next">Add items to <code>items.js</code> (copy <code>sample-items.js</code> to start). Each needs a quadrant <code>q</code> from 1 to 4 and a <code>title</code>.</p></div>';
+ $('grid').outerHTML='<div class="empty"><h3>The fire is empty</h3><p class="next">Add items to <code>items.js</code> (copy <code>sample-items.js</code> to start). Each needs a quadrant <code>q</code> from 1 to 4 and a <code>title</code>.</p></div>';
 }else{
 const list=$('list');
 list.innerHTML=items.map((it,i)=>{
@@ -155,18 +184,21 @@ list.innerHTML=items.map((it,i)=>{
  const linkText=it.key||'Open';
  const ref=it.url?`<a class="link" href="${esc(it.url)}" target="_blank" rel="noopener" aria-label="${esc(linkText)} (opens in new tab)">${esc(linkText)}${ICON_EXT}</a>`:it.key?`<span class="src">${esc(it.key)}</span>`:it.source?`<span class="src">${esc(it.source)}</span>`:'';
  const next=it.next?`<p class="next">${esc(it.next)}</p>`:'';
- return `<li class="row" id="r-${i}" data-i="${i}" style="--rgb:${Q[it.q].rgb}"><span class="num" aria-hidden="true">${i+1}</span><div><h3><button class="rowbtn" type="button" aria-pressed="false" data-i="${i}">${esc(it.title)}</button></h3><p class="meta"><span>${esc(Q[it.q].name)}</span>${w}${by}${dl}${ref}</p>${next}</div></li>`;
+ return `<li class="row${late?' late':''}" id="r-${i}" data-i="${i}" style="--rgb:${it.heat.rgb};--ink:${it.heat.ink}"><span class="num" aria-hidden="true">${i+1}</span><div><h3><button class="rowbtn" type="button" aria-pressed="false" data-i="${i}">${esc(it.title)}</button></h3><p class="meta"><span class="q">${esc(Q[it.q].name)}</span><span>${esc(it.heat.name)}</span>${w}${by}${dl}${ref}</p>${next}</div></li>`;
 }).join('');
 
-const svg=$('scope'),fig=$('fig'),sweep=$('sweep');
+const svg=$('scope'),fig=$('fig');
 const STOPS=[[0,.2],[7,.38],[14,.54],[30,.75],[60,.94]];
 const RINGS=[[7,'1 wk'],[14,'2 wk'],[30,'30 d'],[60,'60 d']];
-const frac=d=>{if(d==null)return .965;if(d<0)return .14;for(let k=1;k<STOPS.length;k++){const[a,fa]=STOPS[k-1],[b,fb]=STOPS[k];if(d<=b)return fa+(fb-fa)*(d-a)/(b-a)}return .94};
+const BANDS=[[.29,'White'],[.46,'Yellow'],[.645,'Orange'],[.845,'Cherry']];
+const frac=d=>{if(d==null)return .965;if(d<0)return .12;for(let k=1;k<STOPS.length;k++){const[a,fa]=STOPS[k-1],[b,fb]=STOPS[k];if(d<=b)return fa+(fb-fa)*(d-a)/(b-a)}return .94};
+// The fire bed: hottest at the center, cooling to the rim. Offsets match the ring positions above.
+const FIRE=[[0,'255 250 235',.38],[.2,'255 244 214',.28],[.38,'255 210 74',.19],[.54,'255 143 46',.14],[.75,'229 65 59',.11],[.94,'156 42 46',.09],[1,'60 22 66',.4]];
 const rad=a=>a*Math.PI/180;
 const gcd=(a,b)=>b?gcd(b,a%b):a;
 let sel=-1;
 
-// Spread each quadrant's blips across its sector, then nudge apart any that overlap.
+// Spread each quadrant's pieces across its sector, then nudge apart any that overlap.
 function layout(cx,cy,R,br){
  const P=items.map(it=>({it,lo:Q[it.q].lo,hi:Q[it.q].hi,r0:frac(it.d)*R}));
  [1,2,3,4].forEach(q=>{
@@ -198,21 +230,22 @@ function layout(cx,cy,R,br){
 
 function draw(){
  const W=fig.clientWidth;if(!W)return;
- const cx=W/2,cy=W/2,pad=Math.max(16,W*.06),R=W/2-pad,br=Math.max(9,Math.min(12,R*.042)),T=2.6;
+ const cx=W/2,cy=W/2,pad=Math.max(16,W*.06),R=W/2-pad,br=Math.max(9,Math.min(12,R*.042)),T=1.6;
  svg.setAttribute('viewBox',`0 0 ${W} ${W}`);
- Object.assign(sweep.style,{left:`${cx-R}px`,top:`${cy-R}px`,width:`${2*R}px`,height:`${2*R}px`});
- let s=`<circle class="disc" cx="${cx}" cy="${cy}" r="${R}"/>`;
+ let s=`<defs><radialGradient id="fire" cx="${cx}" cy="${cy}" r="${R}" gradientUnits="userSpaceOnUse">${FIRE.map(([o,c,a])=>`<stop offset="${o}" stop-color="rgb(${c})" stop-opacity="${a}"/>`).join('')}</radialGradient>`+
+  `<radialGradient id="flare" cx="${cx}" cy="${cy}" r="${R*.6}" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fffaf0" stop-opacity=".55"/><stop offset=".45" stop-color="#ffd24a" stop-opacity=".22"/><stop offset="1" stop-color="#ff8f2e" stop-opacity="0"/></radialGradient></defs>`;
+ s+=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="url(#fire)"/><circle class="flare" cx="${cx}" cy="${cy}" r="${R*.6}" fill="url(#flare)"/><circle class="rim" cx="${cx}" cy="${cy}" r="${R}"/>`;
  RINGS.forEach(([d])=>{s+=`<circle class="ring" cx="${cx}" cy="${cy}" r="${frac(d)*R}"/>`});
  s+=`<line class="axis" x1="${cx-R}" y1="${cy}" x2="${cx+R}" y2="${cy}"/><line class="axis" x1="${cx}" y1="${cy-R}" x2="${cx}" y2="${cy+R}"/>`;
- RINGS.forEach(([d,l])=>{s+=`<text class="rl" x="${cx+6}" y="${cy+frac(d)*R-5}">${l}</text>`});
- s+=`<circle cx="${cx}" cy="${cy}" r="3" fill="#fff"/>`;
- const corner=(q,x,y,end)=>{const a=end?'end':'start',dx=end?x-4:x+4,tx=end?x-14:x+14;return `<circle cx="${dx}" cy="${y-4}" r="4" fill="rgb(${Q[q].rgb})"/><text class="ql" x="${tx}" y="${y}" text-anchor="${a}">${esc(Q[q].name)}</text><text class="qn" x="${tx}" y="${y+18}" text-anchor="${a}">${counts[q-1]}</text>`};
+ RINGS.forEach(([d,l])=>{s+=`<text class="rl" x="${cx-6}" y="${cy+frac(d)*R-4}" text-anchor="end">${l}</text>`});
+ BANDS.forEach(([f,l])=>{s+=`<text class="bl" x="${cx+6}" y="${cy+f*R+4}">${l}</text>`});
+ const corner=(q,x,y,end)=>{const a=end?'end':'start';return `<text class="ql" x="${x}" y="${y}" text-anchor="${a}">${esc(Q[q].name)}</text><text class="qn" x="${x}" y="${y+18}" text-anchor="${a}">${esc(Q[q].hint)} · ${counts[q-1]}</text>`};
  s+=corner(1,4,16,false)+corner(2,W-4,16,true)+corner(3,4,W-22,false)+corner(4,W-4,W-22,true);
  layout(cx,cy,R,br).forEach((p,i)=>{
-  const it=p.it,delay=(((p.th-270)%360+360)%360)/360*T;
+  const it=p.it,delay=.25+p.r/R*T;
   const cls=`blip${sel===i?' sel':''}${it.d!=null&&it.d<0?' late':''}`;
-  const label=`${i+1}. ${it.title}. ${Q[it.q].name}. ${when(it.d)}.`;
-  s+=`<g class="${cls}" data-i="${i}" tabindex="0" role="button" aria-pressed="${sel===i}" aria-label="${esc(label)}" style="--rgb:${Q[it.q].rgb};animation-delay:${delay.toFixed(2)}s" transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})"><circle class="halo" r="${br*2}"/><circle class="core" r="${br}"/><text dy="0.35em">${i+1}</text></g>`;
+  const label=`${i+1}. ${it.title}. ${Q[it.q].name}, ${Q[it.q].hint}. ${it.heat.name}: ${when(it.d)}.`;
+  s+=`<g class="${cls}" data-i="${i}" tabindex="0" role="button" aria-pressed="${sel===i}" aria-label="${esc(label)}" style="--rgb:${it.heat.rgb};--ink:${it.heat.ink};animation-delay:${delay.toFixed(2)}s" transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})"><circle class="halo" r="${br*2}"/><circle class="core" r="${br}"/><text dy="0.35em">${i+1}</text></g>`;
  });
  svg.innerHTML=s;
 }
@@ -232,11 +265,12 @@ list.addEventListener('click',e=>{const b=e.target.closest('.rowbtn');if(b)selec
 list.addEventListener('pointerover',e=>{const r=e.target.closest('.row');if(r)hl(+r.dataset.i,true)});
 list.addEventListener('pointerout',e=>{const r=e.target.closest('.row');if(r&&!r.contains(e.relatedTarget))hl(+r.dataset.i,false)});
 
-let scanTimer;
-function scan(){fig.classList.remove('scan');void fig.offsetWidth;fig.classList.add('scan');clearTimeout(scanTimer);scanTimer=setTimeout(()=>fig.classList.remove('scan'),3400)}
-$('rescan').addEventListener('click',scan);
+// One bellows breath: the fire flares and pieces light up from the hottest outward. Never loops.
+let litTimer;
+function relight(){fig.classList.remove('lit');void fig.offsetWidth;fig.classList.add('lit');clearTimeout(litTimer);litTimer=setTimeout(()=>fig.classList.remove('lit'),2800)}
+$('relight').addEventListener('click',relight);
 const ro=new ResizeObserver(draw);ro.observe(fig);
-draw();scan();
+draw();relight();
 }
 }
 </script>

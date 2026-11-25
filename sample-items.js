@@ -1,4 +1,4 @@
-// Sample items for a made-up small studio. They ship with the repo so the page has something to show.
+// Sample items for a made-up small studio. They ship with the repo so the fire has something to show.
 // To use your own, copy this file to items.js (git-ignored) and change `window.CRUCIBLE_SAMPLE` to
 // `window.CRUCIBLE`. See README.md for every field.
 //
