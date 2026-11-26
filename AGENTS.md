@@ -8,9 +8,9 @@ eisenhower-matrix-crucible shows a to-do list as a forge fire sorted by the Eise
 - The page has no build step and no runtime dependencies. Don't add a framework, bundler or SDK. AWS calls go through `lib/aws.mjs`.
 - Render data from any source as text: escape it or use `textContent`. Links must be `http`/`https`.
 - The data format is `schema/crucible.schema.json`. A change to it must update `scripts/validate.mjs`, its tests, README.md and the crucible-items skill together, and stay readable by task-brazer.
-- Per-user access is enforced by IAM in `infra/` (session tag `email` from the ID token). Never widen the reader role beyond the caller's own board.
+- Sign-in is Google Workspace only, limited to one domain by the pre-sign-up trigger in `infra/lib/crucible-stack.ts` (tested in `test/pre-sign-up.test.mjs`); it must fail closed. Per-user access is enforced by IAM (session tag `email` from the ID token). Never widen the reader role beyond the caller's own board.
 - Styling follows Afterglow (content-forge `design-system/content-forge/MASTER.md`) with the forge heat palette. Aeonik is licensed: never bundle it or load it from the web.
-- `npm test` before every commit. If you change `infra/`, `npx tsc --noEmit` and `npx cdk synth -c domainPrefix=x` in `infra/` too.
+- `npm test` before every commit. If you change `infra/`, `npx tsc --noEmit` and `CDK_DEFAULT_ACCOUNT=123456789012 CDK_DEFAULT_REGION=us-west-2 npx cdk synth -c allowedEmailDomain=example.com` in `infra/` too.
 - Motion runs once and never loops; honor `prefers-reduced-motion`.
 
 ## Generating items

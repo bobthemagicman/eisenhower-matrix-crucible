@@ -23,6 +23,7 @@ window.CRUCIBLE_CONFIG = {
   //   userPoolClientId: 'xxxxxxxxxxxxxxxxxxxxxxxxxx',
   //   identityPoolId: 'us-west-2:00000000-0000-0000-0000-000000000000',
   //   domain: 'https://your-prefix.auth.us-west-2.amazoncognito.com',
+  //   identityProvider: 'Google', // go straight to Google Workspace sign-in
   //   // redirectUri defaults to this page's address; it must be listed on the app client.
   // },
 };

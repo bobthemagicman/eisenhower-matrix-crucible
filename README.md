@@ -52,7 +52,7 @@ The page picks the first that applies: `?data=`, then `config.js`, then `items.j
 
 ### S3 and DynamoDB, for one person or many
 
-The browser reads S3 and DynamoDB directly, signing its own requests (`lib/aws.mjs`, no SDK). Credentials come from Cognito: you sign in on the Hosted UI and get short-lived, read-only AWS credentials for that tab.
+The browser reads S3 and DynamoDB directly, signing its own requests (`lib/aws.mjs`, no SDK). Credentials come from Cognito: you sign in with your Google Workspace account (only your organization's domain is admitted) and get short-lived, read-only AWS credentials for that tab.
 
 `{email}` in the source becomes the signed-in user's email, so one deployed page serves everyone. Access is enforced by IAM, not by the page: each user's role can read only `boards/<their email>.json` and the table row keyed by their email. The `infra/` folder has a CDK stack that sets all of this up; see [infra/README.md](infra/README.md).
 

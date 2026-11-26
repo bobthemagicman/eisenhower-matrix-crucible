@@ -2,19 +2,31 @@
 import { App } from 'aws-cdk-lib';
 import { CrucibleStack } from '../lib/crucible-stack.js';
 
+// npx cdk deploy --profile <p> -c allowedEmailDomain=example.com -c appUrls=https://matrix.example.com/,http://localhost:8080/
 const app = new App();
-const domainPrefix = app.node.tryGetContext('domainPrefix') as string | undefined;
-if (!domainPrefix || !/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(domainPrefix) || /aws|amazon|cognito/.test(domainPrefix)) {
-  throw new Error('Set a Hosted UI prefix: -c domainPrefix=my-crucible (lowercase letters, digits, dashes; globally unique; must not contain aws, amazon or cognito).');
+const ctx = (k: string) => app.node.tryGetContext(k) as string | undefined;
+
+// No fallback: a pool for a placeholder domain would admit nobody, and an empty one must never mean "anyone".
+const allowedEmailDomain = ctx('allowedEmailDomain')?.trim().toLowerCase();
+if (!allowedEmailDomain || !/^[a-z0-9.-]+\.[a-z]{2,}$/.test(allowedEmailDomain)) {
+  throw new Error('Set the Google Workspace domain allowed to sign in: -c allowedEmailDomain=example.com');
 }
-const appUrls = String(app.node.tryGetContext('appUrls') ?? 'http://localhost:8080/').split(',').map(s => s.trim()).filter(Boolean);
+
+const domainPrefix = ctx('domainPrefix');
+if (domainPrefix !== undefined && (!/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(domainPrefix) || /aws|amazon|cognito/.test(domainPrefix))) {
+  throw new Error('domainPrefix: lowercase letters, digits and dashes; globally unique; must not contain aws, amazon or cognito.');
+}
+
+const appUrls = String(ctx('appUrls') ?? 'http://localhost:8080/').split(',').map(s => s.trim()).filter(Boolean);
 for (const u of appUrls) {
   const url = new URL(u);
   if (url.protocol !== 'https:' && url.hostname !== 'localhost') throw new Error(`appUrls: ${u} must be https (only localhost may use http).`);
 }
 
-new CrucibleStack(app, String(app.node.tryGetContext('stackName') ?? 'EisenhowerMatrixCrucible'), {
+new CrucibleStack(app, ctx('stackName') ?? 'EisenhowerMatrixCrucible', {
   appUrls,
+  allowedEmailDomain,
+  googleSecretName: ctx('googleSecretName') ?? 'crucible/google-oauth-client',
   domainPrefix,
   env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
 });

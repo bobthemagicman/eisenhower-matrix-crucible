@@ -21,4 +21,4 @@ jobs:
         run: |
           npm install --no-audit --no-fund
           npx tsc --noEmit
-          npx cdk synth -c domainPrefix=ci-synth-check --quiet
+          CDK_DEFAULT_ACCOUNT=123456789012 CDK_DEFAULT_REGION=us-west-2 npx cdk synth -c allowedEmailDomain=example.com --quiet
