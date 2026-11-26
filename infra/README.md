@@ -59,6 +59,12 @@ The bucket and the table are kept if the stack is deleted, and the table has del
 
    For DynamoDB instead of S3, change `source` to `{ type: 'dynamodb', region, table: <BoardsTableName>, board: '{email}' }`.
 
-3. **Serve the page** from one of the `appUrls`, e.g. `npx serve -l 8080` in the repo root for `http://localhost:8080/`.
+3. **Serve the page** from one of the `appUrls`, e.g. `npx serve -l 8080` in the repo root for `http://localhost:8080/`. To host it on Amplify without a Git connection, create a `WEB` app and a branch once, attach your domain with `aws amplify create-domain-association`, then publish (and republish after changes) with:
+
+   ```sh
+   scripts/deploy-site.sh --app-id <amplify app id> --profile <profile> --region <region>
+   ```
+
+   It reads `CrucibleConfig` from the stack, builds `site/` with `scripts/build-site.sh` (the same build `amplify.yml` runs for a Git-connected app) and uploads it.
 
 4. **Feed it.** Attach the `BrazerWriterPolicyArn` output to the role or user that runs task-brazer, and give task-brazer the bucket and table names.

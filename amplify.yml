@@ -9,15 +9,7 @@ frontend:
   phases:
     build:
       commands:
-        - rm -rf site && mkdir -p site
-        - cp index.html sample-items.js site/
-        - cp -R lib schema site/
-        - >-
-          node -e 'const raw=process.env.CRUCIBLE_CONFIG;
-          if(!raw){console.error("Set the CRUCIBLE_CONFIG environment variable to the stack CrucibleConfig output.");process.exit(1)}
-          const c=JSON.parse(raw);
-          if(!c.source||!c.auth){console.error("CRUCIBLE_CONFIG needs source and auth.");process.exit(1)}
-          require("fs").writeFileSync("site/config.js","window.CRUCIBLE_CONFIG = "+JSON.stringify(c)+";\n")'
+        - bash scripts/build-site.sh
   artifacts:
     baseDirectory: site
     files:
