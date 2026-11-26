@@ -17,6 +17,8 @@ export interface CrucibleStackProps extends StackProps {
   googleSecretName: string;
   /** Hosted UI prefix. Defaults to `matrix-crucible-<hash of the account>`, which names neither the account nor the owner. */
   domainPrefix?: string;
+  /** Where the page reads each user's board from: `s3` (boards/{email}.json, the default) or `dynamodb` (the table row keyed by email). Both stay readable either way. */
+  boardStore?: 's3' | 'dynamodb';
 }
 
 /** Cognito's name for the Google provider; the page passes it as identity_provider to skip Cognito's chooser. */
@@ -195,7 +197,9 @@ export class CrucibleStack extends Stack {
     new CfnOutput(this, 'CrucibleConfig', {
       description: 'Paste into config.js as window.CRUCIBLE_CONFIG = <this>; or set it as CRUCIBLE_CONFIG on Amplify Hosting.',
       value: this.toJsonString({
-        source: { type: 's3', region: this.region, bucket: bucket.bucketName, key: 'boards/{email}.json' },
+        source: props.boardStore === 'dynamodb'
+          ? { type: 'dynamodb', region: this.region, table: table.tableName, board: '{email}' }
+          : { type: 's3', region: this.region, bucket: bucket.bucketName, key: 'boards/{email}.json' },
         auth: { region: this.region, userPoolId: userPool.userPoolId, userPoolClientId: client.userPoolClientId, identityPoolId: identityPool.ref, domain: hostedUi, identityProvider: GOOGLE_PROVIDER_NAME },
       }),
     });

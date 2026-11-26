@@ -23,10 +23,14 @@ for (const u of appUrls) {
   if (url.protocol !== 'https:' && url.hostname !== 'localhost') throw new Error(`appUrls: ${u} must be https (only localhost may use http).`);
 }
 
+const boardStore = ctx('boardStore') ?? 's3';
+if (boardStore !== 's3' && boardStore !== 'dynamodb') throw new Error('boardStore: s3 or dynamodb.');
+
 new CrucibleStack(app, ctx('stackName') ?? 'EisenhowerMatrixCrucible', {
   appUrls,
   allowedEmailDomain,
   googleSecretName: ctx('googleSecretName') ?? 'crucible/google-oauth-client',
   domainPrefix,
+  boardStore,
   env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
 });

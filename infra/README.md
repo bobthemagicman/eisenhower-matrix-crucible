@@ -43,7 +43,7 @@ npx cdk deploy --profile <profile> \
 
 - `allowedEmailDomain` is the Google Workspace domain allowed in. There is no default: without it the stack refuses to build.
 - `appUrls` lists every address the page is served from. Sign-in only returns to these, and the bucket only answers browsers from them. Only localhost may use http.
-- Optional: `-c domainPrefix=...` to choose the Hosted UI prefix yourself, `-c googleSecretName=...` for a different secret name. To reuse an OAuth client another app already stores in the same account and region, pass its secret's name here and add this stack's redirect URI to that client.
+- Optional: `-c boardStore=dynamodb` to have the page read boards from the table instead of S3 (the `CrucibleConfig` output follows it), `-c domainPrefix=...` to choose the Hosted UI prefix yourself, `-c googleSecretName=...` for a different secret name. To reuse an OAuth client another app already stores in the same account and region, pass its secret's name here and add this stack's redirect URI to that client.
 
 The bucket and the table are kept if the stack is deleted, and the table has deletion protection.
 
@@ -57,7 +57,7 @@ The bucket and the table are kept if the stack is deleted, and the table has del
    window.CRUCIBLE_CONFIG = { /* the CrucibleConfig output */ };
    ```
 
-   For DynamoDB instead of S3, change `source` to `{ type: 'dynamodb', region, table: <BoardsTableName>, board: '{email}' }`.
+   With `-c boardStore=dynamodb` the output's `source` is already `{ type: 'dynamodb', region, table, board: '{email}' }`.
 
 3. **Serve the page** from one of the `appUrls`, e.g. `npx serve -l 8080` in the repo root for `http://localhost:8080/`. To host it on Amplify without a Git connection, create a `WEB` app and a branch once, attach your domain with `aws amplify create-domain-association`, then publish (and republish after changes) with:
 
