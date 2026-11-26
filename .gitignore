@@ -16,3 +16,6 @@ infra/cdk.context.json
 node_modules/
 
 .DS_Store
+
+# Amplify build output
+site/
