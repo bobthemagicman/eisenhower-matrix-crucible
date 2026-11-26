@@ -43,7 +43,7 @@ npx cdk deploy --profile <profile> \
 
 - `allowedEmailDomain` is the Google Workspace domain allowed in. There is no default: without it the stack refuses to build.
 - `appUrls` lists every address the page is served from. Sign-in only returns to these, and the bucket only answers browsers from them. Only localhost may use http.
-- Optional: `-c domainPrefix=...` to choose the Hosted UI prefix yourself, `-c googleSecretName=...` for a different secret name.
+- Optional: `-c domainPrefix=...` to choose the Hosted UI prefix yourself, `-c googleSecretName=...` for a different secret name. To reuse an OAuth client another app already stores in the same account and region, pass its secret's name here and add this stack's redirect URI to that client.
 
 The bucket and the table are kept if the stack is deleted, and the table has deletion protection.
 

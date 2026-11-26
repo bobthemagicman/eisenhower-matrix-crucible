@@ -20,7 +20,7 @@ export interface CrucibleStackProps extends StackProps {
 }
 
 /** Cognito's name for the Google provider; the page passes it as identity_provider to skip Cognito's chooser. */
-export const GOOGLE_PROVIDER_NAME = 'Google';
+export const GOOGLE_PROVIDER_NAME = 'GoogleWorkspace'; // "Google" is reserved for Cognito's built-in provider type
 
 // IAM policy variable for the signed-in user's email, set from their ID token by the identity pool.
 const USER_EMAIL = '${aws:PrincipalTag/email}';
