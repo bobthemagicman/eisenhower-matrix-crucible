@@ -31,3 +31,11 @@ test('quadrant renames accept a name or { name, hint }', () => {
   assert.deepEqual(validateDoc({ quadrants: { 4: 'Park', 1: { name: 'Now', hint: 'Do first' } }, items: [] }), []);
   assert.equal(validateDoc({ quadrants: { 5: 'x' }, items: [] }).length, 1);
 });
+
+test('description is optional plain text, up to 4000 characters', () => {
+  assert.deepEqual(validateDoc({ items: [{ q: 1, title: 'x', description: 'Line one.\n\n• a point' }] }), []);
+  assert.deepEqual(validateDoc({ items: [{ q: 1, title: 'x', description: 7 }, { q: 1, title: 'y', description: 'z'.repeat(4001) }] }), [
+    'items[0].description must be text',
+    'items[1].description: at most 4000 characters',
+  ]);
+});

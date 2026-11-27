@@ -13,7 +13,7 @@
    PICTURE: one round fire bed cut into the four Eisenhower quadrants (Strike, Bank, Striker, Slag), numbered pieces glowing in their heat color.
    COLOUR and TYPE: Afterglow ground and glass (content-forge MASTER.md) with blacksmith heat colors (white, yellow, orange, cherry, dull red, black heat);
    Aeonik if installed locally (never bundled: it is licensed), else Lato.
-   LAYOUT: fire left (sticky), numbered list right; stacks under 900px. */
+   LAYOUT: the fire on top, as wide as the page column, with the numbered list under it. */
 :root{color-scheme:dark;--bg:#0b0710;--glass:rgb(255 255 255/.04);--glass-hover:rgb(255 255 255/.07);--border:rgb(255 255 255/.09);--edge:rgb(255 255 255/.14);--raised:#1a1220;--strong:#fff;--text:#e5e5e5;--muted:#aaa;--lime:#affc41;--magenta:#d92b83;--pink:#ee77ae;--amber:#f2a524;--danger:#ff6b6b;--heat:linear-gradient(95deg,#fff4d6 0%,#ffd24a 28%,#ff8f2e 55%,#e5413b 80%,#9c2a2e 100%);--display:"Aeonik","Lato",Arial,sans-serif;--sans:"Lato",Arial,sans-serif}
 :root[data-theme=light],:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
@@ -55,23 +55,24 @@ h2{font-size:24px;line-height:1.2}
 .heats li:last-child .bar{border-radius:2px 999px 999px 2px;box-shadow:none}
 .heats b{color:var(--strong);font-weight:700;font-variant-numeric:tabular-nums}
 :focus-visible{outline:2px solid var(--amber);outline-offset:3px}
-.grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:32px;align-items:start}
-.scope{position:sticky;top:24px;padding:12px;border-radius:18px;background:var(--glass);border:1px solid var(--border)}
-.fig{position:relative;aspect-ratio:1/1;width:min(100%,calc(100dvh - 72px));margin-inline:auto}
+.grid{display:grid;gap:32px}
+.scope{padding:12px;border-radius:18px;background:var(--glass);border:1px solid var(--border)}
+.fig{position:relative;aspect-ratio:1/1;width:100%}
 .fig>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .ring{fill:none;stroke:rgb(255 255 255/.12);stroke-dasharray:2 5}
 .rim{fill:none;stroke:var(--edge)}
 .axis{stroke:rgb(255 255 255/.12)}
-.rl,.bl{font:400 12px var(--sans);paint-order:stroke;stroke:rgb(11 7 16/.85);stroke-width:3px;stroke-linejoin:round}
+.rl,.bl{font:400 calc(12px*var(--k,1)) var(--sans);paint-order:stroke;stroke:rgb(11 7 16/.85);stroke-width:calc(3px*var(--k,1));stroke-linejoin:round}
 .rl{fill:var(--muted)}
 .bl{fill:var(--text)}
-.ql{fill:var(--strong);font:400 12px var(--display);letter-spacing:.12em;text-transform:uppercase}
-.qn{fill:var(--muted);font:400 13px var(--sans)}
+.ql{fill:var(--strong);font:400 calc(12px*var(--k,1)) var(--display);letter-spacing:.12em;text-transform:uppercase}
+.qn{fill:var(--muted);font:400 calc(13px*var(--k,1)) var(--sans)}
+.ax{fill:var(--muted);font:400 calc(11px*var(--k,1)) var(--display);letter-spacing:.16em;text-transform:uppercase;text-anchor:middle}
 .flare{opacity:.55}
 .blip{cursor:pointer;outline:none}
 .blip .halo{fill:rgb(var(--rgb)/.2);transform-box:fill-box;transform-origin:center;transition:transform .2s ease,fill .2s}
 .blip .core{fill:rgb(var(--rgb));stroke:var(--bg);stroke-width:2}
-.blip text{fill:var(--ink);font:700 12px var(--sans);text-anchor:middle;pointer-events:none;font-variant-numeric:tabular-nums}
+.blip text{fill:var(--ink);font:700 calc(12px*var(--k,1)) var(--sans);text-anchor:middle;pointer-events:none;font-variant-numeric:tabular-nums}
 .blip.late .core{stroke:var(--danger);stroke-width:2.5;stroke-dasharray:3 2}
 .blip:hover .halo,.blip.hl .halo,.blip:focus-visible .halo{transform:scale(1.35);fill:rgb(var(--rgb)/.34)}
 .blip:focus-visible .core{stroke:var(--amber);stroke-width:3;stroke-dasharray:none}
@@ -98,6 +99,24 @@ h2{font-size:24px;line-height:1.2}
 .alert{border-color:var(--danger)}
 .alert h2{display:flex;gap:10px;align-items:center}
 .alert h2 svg{color:var(--danger);flex:none}
+.dlg{width:min(640px,calc(100vw - 32px));max-height:min(86dvh,920px);padding:0;border-radius:18px;border:1px solid var(--edge);background:var(--raised);color:var(--text);box-shadow:0 40px 120px -30px rgb(0 0 0/.85),0 0 80px -40px rgb(var(--rgb,255 143 46)/.5);overflow:auto}
+.dlg::backdrop{background:rgb(11 7 16/.72);backdrop-filter:blur(4px)}
+.dlg .in{padding:24px 28px 28px}
+.dtop{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.dq{display:inline-flex;align-items:center;gap:8px;color:var(--muted)}
+.dq .dot{width:12px;height:12px;border-radius:50%;background:rgb(var(--rgb));box-shadow:0 0 12px rgb(var(--rgb)/.7);flex:none}
+.dq .late{outline:2px dashed var(--danger);outline-offset:2px}
+.x{width:36px;height:36px;flex:none;border-radius:50%;border:1px solid var(--edge);background:var(--glass);color:var(--text);display:grid;place-items:center;cursor:pointer;transition:background .2s}
+.x:hover{background:var(--glass-hover)}
+.dlg h2{font-size:clamp(22px,3vw,28px);line-height:1.2;overflow-wrap:anywhere}
+.dlg .meta{margin-top:8px}
+.dlg h3{margin:24px 0 6px;color:var(--muted)}
+.dlg p{margin:0}
+.desc{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6;max-width:65ch}
+.desc a{color:var(--text);text-decoration:underline 1px var(--magenta);text-underline-offset:3px}
+.desc a:hover{color:#fff}
+.none{color:var(--muted);font-style:italic}
+.dlink{display:inline-flex;align-items:center;gap:8px;margin-top:28px;text-decoration:none}
 .drop{position:fixed;inset:12px;z-index:100;border:2px dashed var(--amber);border-radius:18px;background:rgb(11 7 16/.8);display:grid;place-items:center;font:400 24px var(--display);color:var(--strong);pointer-events:none}
 footer{color:var(--muted);font-size:14px;margin-top:40px;max-width:70ch}
 footer p{margin:0 0 8px}
@@ -107,12 +126,13 @@ code{font-size:.9em;color:var(--strong)}
 @media(prefers-reduced-motion:no-preference){
  .row:hover{transform:translateY(-2px)}
  .primary:hover{transform:translateY(-2px)}
+ .dlg[open]{animation:pop .22s ease-out 1}
  .lit .flare{animation:flare 2.4s ease-out 1}
  .lit .blip{opacity:0;animation:glowIn .5s ease forwards}
 }
 @keyframes flare{0%{opacity:.15}35%{opacity:1}100%{opacity:.55}}
 @keyframes glowIn{to{opacity:1}}
-@media(max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}.scope{position:static;max-width:620px;width:100%;margin-inline:auto}}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.98)}}
 @media(max-width:600px){.btn{margin-left:0}main{padding-top:28px}}
 @media(forced-colors:active){header{border-image:none;border-bottom-color:CanvasText}}
 </style>
@@ -140,10 +160,11 @@ code{font-size:.9em;color:var(--strong)}
  <div id="panel" class="panel" style="margin-top:28px" hidden></div>
  <footer>
   <p><b>Strike</b> do it now, while the iron is hot. <b>Bank</b> schedule it: bank the fire and come back. <b>Striker</b> delegate it: the striker is the smith’s helper on the sledge. <b>Slag</b> skim it off and drop it.</p>
-  <p>Rings mark one week, two weeks, 30 days and 60 days from today. Items with no date sit at black heat on the rim. Selecting a piece highlights its row, and the other way round. Drop a JSON file anywhere on the page to look at it; it stays in your browser.</p>
+  <p>Rings mark one week, two weeks, 30 days and 60 days from today. Items with no date sit at black heat on the rim. Click a piece or a row to open its details: the description from the source and a link to it. Drop a JSON file anywhere on the page to look at it; it stays in your browser.</p>
  </footer>
 </main>
 <div class="drop" id="drop" hidden>Drop a crucible JSON file</div>
+<dialog class="dlg" id="detail" aria-labelledby="d-title"><div class="in" id="d-in"></div></dialog>
 <script>
 {
 const CFG=window.CRUCIBLE_CONFIG||{};
@@ -267,7 +288,7 @@ function render(doc,{from,sample}){
   const linkText=typeof it.key==='string'&&it.key?it.key:'Open';
   const ref=it.url?`<a class="link" href="${esc(it.url)}" target="_blank" rel="noopener" aria-label="${esc(linkText)} (opens in new tab)">${esc(linkText)}${ICON_EXT}</a>`:it.key?`<span class="src">${esc(it.key)}</span>`:it.source?`<span class="src">${esc(it.source)}</span>`:'';
   const next=it.next?`<p class="next">${esc(it.next)}</p>`:'';
-  return `<li class="row${late?' late':''}" id="r-${i}" data-i="${i}" style="--rgb:${it.heat.rgb};--ink:${it.heat.ink}"><span class="num" aria-hidden="true">${i+1}</span><div><h3><button class="rowbtn" type="button" aria-pressed="false" data-i="${i}">${esc(it.title)}</button></h3><p class="meta"><span class="q">${esc(Q[it.q].name)}</span><span>${esc(it.heat.name)}</span>${w}${by}${dl}${ref}</p>${next}</div></li>`;
+  return `<li class="row${late?' late':''}" id="r-${i}" data-i="${i}" style="--rgb:${it.heat.rgb};--ink:${it.heat.ink}"><span class="num" aria-hidden="true">${i+1}</span><div><h3><button class="rowbtn" type="button" aria-haspopup="dialog" data-i="${i}">${esc(it.title)}</button></h3><p class="meta"><span class="q">${esc(Q[it.q].name)}</span><span>${esc(it.heat.name)}</span>${w}${by}${dl}${ref}</p>${next}</div></li>`;
  }).join('');
  draw();relight();
 }
@@ -315,38 +336,105 @@ function layout(cx,cy,R,br){
 
 function draw(){
  const W=fig.clientWidth;if(!W||!items.length)return;
- const cx=W/2,cy=W/2,pad=Math.max(16,W*.06),R=W/2-pad,br=Math.max(9,Math.min(12,R*.042)),T=1.6;
- svg.setAttribute('viewBox',`0 0 ${W} ${W}`);
+ // k scales labels and pieces with the fire: 1 at the old 660px size, up to 1.6 on big screens.
+ const k=Math.min(1.6,Math.max(1,W/660));
+ const cx=W/2,cy=W/2,pad=Math.max(16,W*.06),R=W/2-pad,br=Math.max(9,Math.min(12*k,R*.042)),T=1.6;
+ svg.setAttribute('viewBox',`0 0 ${W} ${W}`);svg.style.setProperty('--k',k.toFixed(3));
  let s=`<defs><radialGradient id="fire" cx="${cx}" cy="${cy}" r="${R}" gradientUnits="userSpaceOnUse">${FIRE.map(([o,c,a])=>`<stop offset="${o}" stop-color="rgb(${c})" stop-opacity="${a}"/>`).join('')}</radialGradient>`+
   `<radialGradient id="flare" cx="${cx}" cy="${cy}" r="${R*.6}" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fffaf0" stop-opacity=".55"/><stop offset=".45" stop-color="#ffd24a" stop-opacity=".22"/><stop offset="1" stop-color="#ff8f2e" stop-opacity="0"/></radialGradient></defs>`;
  s+=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="url(#fire)"/><circle class="flare" cx="${cx}" cy="${cy}" r="${R*.6}" fill="url(#flare)"/><circle class="rim" cx="${cx}" cy="${cy}" r="${R}"/>`;
  RINGS.forEach(([d])=>{s+=`<circle class="ring" cx="${cx}" cy="${cy}" r="${frac(d)*R}"/>`});
  s+=`<line class="axis" x1="${cx-R}" y1="${cy}" x2="${cx+R}" y2="${cy}"/><line class="axis" x1="${cx}" y1="${cy-R}" x2="${cx}" y2="${cy+R}"/>`;
- RINGS.forEach(([d,l])=>{s+=`<text class="rl" x="${cx-6}" y="${cy+frac(d)*R-4}" text-anchor="end">${l}</text>`});
- BANDS.forEach(([f,l])=>{s+=`<text class="bl" x="${cx+6}" y="${cy+f*R+4}">${l}</text>`});
- const corner=(q,x,y,end)=>{const a=end?'end':'start';return `<text class="ql" x="${x}" y="${y}" text-anchor="${a}">${esc(Q[q].name)}</text><text class="qn" x="${x}" y="${y+18}" text-anchor="${a}">${esc(Q[q].hint)} · ${counts[q-1]}</text>`};
- s+=corner(1,4,16,false)+corner(2,W-4,16,true)+corner(3,4,W-22,false)+corner(4,W-4,W-22,true);
+ RINGS.forEach(([d,l])=>{s+=`<text class="rl" x="${cx-6*k}" y="${cy+frac(d)*R-4*k}" text-anchor="end">${l}</text>`});
+ BANDS.forEach(([f,l])=>{s+=`<text class="bl" x="${cx+6*k}" y="${cy+f*R+4*k}">${l}</text>`});
+ const corner=(q,x,y,end)=>{const a=end?'end':'start';return `<text class="ql" x="${x}" y="${y}" text-anchor="${a}">${esc(Q[q].name)}</text><text class="qn" x="${x}" y="${y+18*k}" text-anchor="${a}">${esc(Q[q].hint)} · ${counts[q-1]}</text>`};
+ s+=corner(1,4,16*k,false)+corner(2,W-4,16*k,true)+corner(3,4,W-22*k,false)+corner(4,W-4,W-22*k,true);
+ // The matrix axes: columns above the rim (urgent left), rows up the left side (important on top).
+ const top=cy-R-10*k,side=cx-R-10*k;
+ s+=`<text class="ax" x="${cx-R/2}" y="${top}">Urgent</text><text class="ax" x="${cx+R/2}" y="${top}">Not urgent</text>`+
+  `<text class="ax" transform="translate(${side} ${cy-R/2}) rotate(-90)">Important</text><text class="ax" transform="translate(${side} ${cy+R/2}) rotate(-90)">Not important</text>`;
  layout(cx,cy,R,br).forEach((p,i)=>{
   const it=p.it,delay=.25+p.r/R*T;
   const cls=`blip${sel===i?' sel':''}${it.d!=null&&it.d<0?' late':''}`;
   const label=`${i+1}. ${it.title}. ${Q[it.q].name}, ${Q[it.q].hint}. ${it.heat.name}: ${when(it.d)}.`;
-  s+=`<g class="${cls}" data-i="${i}" tabindex="0" role="button" aria-pressed="${sel===i}" aria-label="${esc(label)}" style="--rgb:${it.heat.rgb};--ink:${it.heat.ink};animation-delay:${delay.toFixed(2)}s" transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})"><circle class="halo" r="${br*2}"/><circle class="core" r="${br}"/><text dy="0.35em">${i+1}</text></g>`;
+  s+=`<g class="${cls}" data-i="${i}" tabindex="0" role="button" aria-haspopup="dialog" aria-label="${esc(label)}" style="--rgb:${it.heat.rgb};--ink:${it.heat.ink};animation-delay:${delay.toFixed(2)}s" transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})"><circle class="halo" r="${br*2}"/><circle class="core" r="${br}"/><text dy="0.35em">${i+1}</text></g>`;
  });
  svg.innerHTML=s;
 }
 
 const blip=i=>svg.querySelector(`.blip[data-i="${i}"]`),row=i=>$('r-'+i);
 function hl(i,on){blip(i)?.classList.toggle('hl',on);row(i)?.classList.toggle('hl',on)}
-function select(i,fromScope){
- sel=sel===i?-1:i;
- items.forEach((_,k)=>{const on=k===sel,r=row(k);if(r){r.classList.toggle('sel',on);r.querySelector('.rowbtn').setAttribute('aria-pressed',on)}const b=blip(k);if(b){b.classList.toggle('sel',on);b.setAttribute('aria-pressed',on)}});
- if(fromScope&&sel>=0)row(sel).scrollIntoView({block:'nearest',behavior:reduced?'auto':'smooth'});
+// The piece and row of the item last opened stay marked, so you can find it again after closing.
+function select(i){
+ sel=i;
+ items.forEach((_,k)=>{const on=k===sel;row(k)?.classList.toggle('sel',on);blip(k)?.classList.toggle('sel',on)});
 }
-svg.addEventListener('click',e=>{const g=e.target.closest('.blip');if(g)select(+g.dataset.i,true)});
-svg.addEventListener('keydown',e=>{const g=e.target.closest('.blip');if(g&&(e.key==='Enter'||e.key===' ')){e.preventDefault();select(+g.dataset.i,true)}});
+
+// ---- Detail view: everything the item carries, built with textContent so source text stays text. --------
+const dlg=$('detail');
+const ICON_X='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>';
+/** A name for where the link goes: Jira for Atlassian sites, else the item's source label or the host. */
+function sourceName(it){
+ try{
+  const h=new URL(it.url).hostname;
+  if(/\.atlassian\.net$/.test(h))return'Jira';
+  if(h==='github.com')return'GitHub';
+  if(h==='mail.google.com')return'Gmail';
+  if(h==='calendar.google.com')return'Google Calendar';
+  return it.source||h.replace(/^www\./,'');
+ }catch{return it.source||'the source'}
+}
+const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e};
+/** Plain text with its http(s) addresses made into links. */
+function linkify(parent,text){
+ let last=0;
+ for(const m of text.matchAll(/https?:\/\/[^\s<>"']+[^\s<>"'.,;:!?)\]]/g)){
+  parent.append(text.slice(last,m.index));
+  const a=el('a',null,m[0]);a.href=m[0];a.target='_blank';a.rel='noopener';parent.append(a);
+  last=m.index+m[0].length;
+ }
+ parent.append(text.slice(last));
+}
+let opener=null;
+function openDetail(i){
+ const it=items[i];if(!it)return;
+ select(i);
+ const late=it.d!=null&&it.d<0,name=it.url?sourceName(it):null,box=$('d-in');
+ box.replaceChildren();
+ dlg.style.setProperty('--rgb',it.heat.rgb);
+ const top=el('div','dtop'),q=el('span','dq label');
+ const dot=el('span','dot'+(late?' late':''));dot.style.setProperty('--rgb',it.heat.rgb);
+ q.append(dot,`${i+1} · ${Q[it.q].name} · ${it.heat.name}`);
+ const x=el('button','x');x.type='button';x.setAttribute('aria-label','Close');x.innerHTML=ICON_X;x.addEventListener('click',()=>dlg.close());
+ top.append(q,x);
+ const meta=el('p','meta');
+ const w=el('span',late?'late':null);if(late)w.innerHTML=ICON_ALERT;w.append(when(it.d));meta.append(w);
+ if(it.d!=null)meta.append(el('span',null,`Act by ${fmt(it.by)}`));
+ if(toDate(it.deadline))meta.append(el('span',null,`Deadline ${fmt(it.deadline)}`));
+ if(!it.url&&(it.key||it.source))meta.append(el('span','src',it.key||it.source));
+ const h=el('h2',null,it.title);h.id='d-title';
+ box.append(top,h,meta);
+ if(it.next)box.append(el('h3','label','Next step'),el('p','next',it.next));
+ box.append(el('h3','label','Description'));
+ if(typeof it.description==='string'&&it.description.trim()){const d=el('p','desc');linkify(d,it.description.trim());box.append(d)}
+ else box.append(el('p','none',name?`No description in ${name}.`:'No description from the source.'));
+ if(it.url){
+  const a=el('a','primary label dlink');a.href=it.url;a.target='_blank';a.rel='noopener';
+  a.append(it.key?`Open ${it.key} in ${name}`:`Open in ${name}`);a.insertAdjacentHTML('beforeend',ICON_EXT);a.setAttribute('aria-label',`${a.textContent} (opens in new tab)`);
+  box.append(a);
+ }
+ opener=document.activeElement;
+ if(!dlg.open)dlg.showModal();
+ x.focus();
+}
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()}); // a click on the backdrop
+dlg.addEventListener('close',()=>{opener?.focus?.();opener=null});
+
+svg.addEventListener('click',e=>{const g=e.target.closest('.blip');if(g)openDetail(+g.dataset.i)});
+svg.addEventListener('keydown',e=>{const g=e.target.closest('.blip');if(g&&(e.key==='Enter'||e.key===' ')){e.preventDefault();openDetail(+g.dataset.i)}});
 svg.addEventListener('pointerover',e=>{const g=e.target.closest('.blip');if(g)hl(+g.dataset.i,true)});
 svg.addEventListener('pointerout',e=>{const g=e.target.closest('.blip');if(g)hl(+g.dataset.i,false)});
-list.addEventListener('click',e=>{const b=e.target.closest('.rowbtn');if(b)select(+b.dataset.i,false)});
+list.addEventListener('click',e=>{if(e.target.closest('a'))return;const b=e.target.closest('.rowbtn');if(b)openDetail(+b.dataset.i)});
 list.addEventListener('pointerover',e=>{const r=e.target.closest('.row');if(r)hl(+r.dataset.i,true)});
 list.addEventListener('pointerout',e=>{const r=e.target.closest('.row');if(r&&!r.contains(e.relatedTarget))hl(+r.dataset.i,false)});
 $('legend').addEventListener('click',e=>{if(e.target.closest('[data-act="relight"]'))relight()});

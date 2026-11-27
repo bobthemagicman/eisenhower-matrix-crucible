@@ -60,6 +60,7 @@ Keep the top 20, in priority order: all of quadrant 1 first (soonest first), the
 | `by` | When the **next step** is due, `YYYY-MM-DD`. Not the outer deadline: work back from it to a realistic date |
 | `deadline` | The outer deadline, when there is one and it differs from `by` |
 | `next` | One concrete sentence: the very next action, and why now if it isn't obvious |
+| `description` | Optional. The source's own notes, as plain text (e.g. the ticket description), trimmed to what helps. Copied, never invented |
 | `key` / `url` | Ticket key, or a link to the source (`http`/`https` only) |
 | `source` | A short label when there is no key, e.g. `Calendar`, `Slack · #ops` |
 

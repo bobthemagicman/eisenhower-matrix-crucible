@@ -65,6 +65,7 @@
         },
         "deadline": { "$ref": "#/$defs/when", "description": "The outer deadline, if different from by. Shown in the list only." },
         "next": { "type": "string", "description": "The next step, in a sentence." },
+        "description": { "type": "string", "maxLength": 4000, "description": "Longer notes from the source, as plain text (line breaks kept), e.g. a Jira description. Shown in the detail view." },
         "key": { "type": "string", "description": "A ticket key. With linkBase it becomes a link." },
         "url": { "$ref": "#/$defs/httpUrl", "description": "A link for the item; overrides linkBase." },
         "source": { "type": "string", "description": "Where the item came from, shown when there is no key." }

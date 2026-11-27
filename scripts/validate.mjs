@@ -12,7 +12,7 @@ import { pathToFileURL } from 'node:url';
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 const HTTP = /^https?:\/\//;
 const TOP = new Set(['version', 'title', 'brand', 'goal', 'snapshot', 'linkBase', 'quadrants', 'items']);
-const ITEM = new Set(['id', 'q', 'title', 'by', 'deadline', 'next', 'key', 'url', 'source']);
+const ITEM = new Set(['id', 'q', 'title', 'by', 'deadline', 'next', 'description', 'key', 'url', 'source']);
 
 const isDate = v => typeof v === 'string' && DATE.test(v) && !Number.isNaN(new Date(v + 'T00:00:00Z').getTime());
 const isWhen = v => isDate(v) || Number.isInteger(v);
@@ -51,7 +51,8 @@ export function validateDoc(doc) {
       if (typeof it.title !== 'string' || !it.title.trim()) p.push(`${at}.title is required`);
       if (it.by !== undefined && it.by !== null && !isWhen(it.by)) p.push(`${at}.by must be YYYY-MM-DD, a whole number of days, or null`);
       if (it.deadline !== undefined && !isWhen(it.deadline)) p.push(`${at}.deadline must be YYYY-MM-DD or a whole number of days`);
-      for (const k of ['next', 'key', 'source', 'id']) if (it[k] !== undefined && typeof it[k] !== 'string') p.push(`${at}.${k} must be text`);
+      for (const k of ['next', 'description', 'key', 'source', 'id']) if (it[k] !== undefined && typeof it[k] !== 'string') p.push(`${at}.${k} must be text`);
+      if (typeof it.description === 'string' && it.description.length > 4000) p.push(`${at}.description: at most 4000 characters`);
       if (it.url !== undefined && !(typeof it.url === 'string' && HTTP.test(it.url))) p.push(`${at}.url must start with http:// or https://`);
       if (typeof it.id === 'string') { if (ids.has(it.id)) p.push(`${at}.id "${it.id}" is used twice`); ids.add(it.id); }
     });
