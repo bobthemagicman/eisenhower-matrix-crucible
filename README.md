@@ -85,6 +85,7 @@ node scripts/validate.mjs items.json
 | `by` | no | When the next step is due: a date `"YYYY-MM-DD"` or a number of days from today. Sets the heat and the distance from the center. Leave it out or `null` for black heat on the rim |
 | `deadline` | no | The outer deadline, if different from `by`. Shown in the list only |
 | `next` | no | The next step, in a sentence |
+| `description` | no | Longer notes from the source, as plain text (line breaks kept, up to 4000 characters), e.g. a Jira description. Shown when you open the item |
 | `id` | no | Stable id such as `jira:OPS-12`. task-brazer always sets it |
 | `key` | no | A ticket key. With `linkBase` it becomes a link |
 | `url` | no | A link for the item (overrides `linkBase`). Only `http` and `https` links are used |
